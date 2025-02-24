@@ -1,0 +1,14 @@
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/controller/ToDoItemBotController.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/MyTodoListApplication.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/config/CorsConfig.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/service/ToDoItemService.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/controller/ToDoItemController.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/util/BotMessages.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/util/BotLabels.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/security/WebSecurityConfiguration.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/util/BotCommands.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/config/DbSettings.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/repository/ToDoItemRepository.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/util/BotHelper.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/config/OracleConfiguration.java
+/Users/misa_v/Documents/TecmoMac/Sem6/agile-organizer-main/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/model/ToDoItem.java
