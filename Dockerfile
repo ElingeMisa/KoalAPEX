@@ -21,4 +21,4 @@ ENV dbpassword="None74108520"
 
 # Inicia el contenedor en bash
 CMD ["/bin/bash"]
-ENTRYPOINT ["java","-jar","MyTodoList.jar"]
+#ENTRYPOINT ["java","-jar","MyTodoList.jar"]
