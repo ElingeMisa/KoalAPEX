@@ -12,3 +12,10 @@ com\springboot\MyTodoList\model\ToDoItem.class
 com\springboot\MyTodoList\util\BotHelper.class
 com\springboot\MyTodoList\util\BotCommands.class
 com\springboot\MyTodoList\controller\ToDoItemBotController.class
+static/index.html
+static/static/js/main.b66330bc.js.map
+static/static/css/main.8fe50650.css
+static/asset-manifest.json
+static/static/js/main.b66330bc.js.LICENSE.txt
+static/static/css/main.8fe50650.css.map
+static/static/js/main.b66330bc.js
