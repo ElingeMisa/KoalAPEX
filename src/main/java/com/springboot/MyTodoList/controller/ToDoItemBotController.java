@@ -72,6 +72,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				row.add(BotLabels.HIDE_MAIN_SCREEN.getLabel());
 				keyboard.add(row);
 
+				// tercera fila
+				row = new KeyboardRow();
+				row.add(BotLabels.NEW_HELLO.getLabel());
+				keyboard.add(row);
 				// Set the keyboard
 				keyboardMarkup.setKeyboard(keyboard);
 
@@ -216,6 +220,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					logger.error(e.getLocalizedMessage(), e);
 				}
 
+			} else if(messageTextFromTelegram.equals(BotCommands.NEW_HELLO.getCommand()) || messageTextFromTelegram.equals(BotLabels.NEW_HELLO.getLabel())) {
+				SendMessage messageToTelegram = new SendMessage();
+				messageToTelegram.setChatId(chatId);
+				messageToTelegram.setText(BotMessages.NEW_HELLO.getMessage());
+				try {
+					execute(messageToTelegram);
+				} catch (TelegramApiException e) {
+					logger.error(e.getLocalizedMessage(), e);
+				}
 			}
 
 			else {
