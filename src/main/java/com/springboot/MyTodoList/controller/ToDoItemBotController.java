@@ -46,6 +46,7 @@ import com.springboot.MyTodoList.util.BotMessages;
  * Delega el manejo de comandos a manejadores especializados
  * (los 500 archivos de la carpeta handlers)
  */
+
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
     private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
@@ -83,7 +84,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
             try {
                 // Los items nuevos se manejan de manera especial
-                
+
                 if (newToDoItemHandler.isExpectingNewItem()) {
                     newToDoItemHandler.handleNewItemText(update, this);
                     return;

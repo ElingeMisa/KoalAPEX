@@ -30,7 +30,10 @@ public class NewHelloCommandHandler implements CommandHandler {
         
         SendMessage messageToTelegram = new SendMessage();
         messageToTelegram.setChatId(chatId);
-        messageToTelegram.setText(BotMessages.NEW_HELLO.getMessage());
+
+        String chatidString = toString().valueOf(chatId);
+        String message = BotMessages.NEW_HELLO.getMessage() + " " + chatidString;
+        messageToTelegram.setText(message);
         
         try {
             sender.execute(messageToTelegram);
