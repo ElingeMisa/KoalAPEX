@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * Handles the command to add a new to-do item
  */
 public class AddItemCommandHandler implements CommandHandler {
+    
     private static final Logger logger = LoggerFactory.getLogger(AddItemCommandHandler.class);
     private final ToDoItemService toDoItemService;
 
