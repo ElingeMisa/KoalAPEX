@@ -1,0 +1,106 @@
+.navbar {
+  width: 200px; /* Adjust the width as needed */
+  height: 100%; /* Full height */
+  border-right: 1px solid #ccc; /* Border on the right */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center;
+  justify-content: flex-start; /* Align items to the top */
+  padding-top: 1rem; /* Add some padding at the top */
+  color: var(--text-color);
+  position: fixed; /* Fix the navbar to the left side */
+  left: 0;
+  top: 0;
+  background-color: var(--background-color); /* Adjust background color as needed */
+  z-index: 1000; /* Ensure the navbar stays on top */
+}
+
+.navbar-header {
+  margin-bottom: 2rem; /* Add some space below the heading */
+  justify-items: end;
+}
+
+.navbar-header img {
+  width: 3vw;
+  height: 3vh;
+  object-fit: contain;
+}
+
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.label {
+  width: 36px;
+  height: 11px !important;
+  background-color: #111;
+  display: flex;
+  border-radius: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  position: relative;
+  transform: scale(1.5);
+}
+
+.ball {
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+/*  target the element after the label */
+.checkbox:checked + .label .ball {
+  transform: translateX(24px);
+}
+
+.fa-moon {
+  color: pink;
+}
+
+.fa-sun {
+  color: yellow;
+}
+
+.theme-switch-wrapper {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  margin-bottom: 2rem;
+  height: 90%;
+  width: 100%;
+}
+
+.navbar-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.navbar-item i {
+  margin-right: 10px;
+}
+
+.navbar-item span {
+  font-size: 14px;
+}
+
+.navbar-item.selected {
+  outline: 2px solid var(--text-color);
+}
+
+[data-theme="dark"] .navbar-item {
+  color: #fff;
+}
+
+[data-theme="light"] .navbar-item {
+  color: #000;
+}

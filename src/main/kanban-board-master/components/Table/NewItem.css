@@ -1,0 +1,49 @@
+.newinputform {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    margin: 0 0 10px 0;
+  }
+  
+  .newinputform form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  #newiteminput {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  #newiteminput:focus {
+    outline: none;
+    border-color: #614caf;
+  }
+  
+  .AddButton {
+    padding: 10px 20px;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .AddButton:hover {
+    background-color: #614caf;
+    cursor: pointer;
+  }
+  
+  .AddButton:disabled {
+    background-color: #7e7e7e;
+    cursor: not-allowed;
+  }
