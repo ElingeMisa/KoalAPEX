@@ -5,12 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public class BotHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(BotHelper.class);
 
-	public static void sendMessageToTelegram(Long chatId, String text, TelegramLongPollingBot bot) {
+	public static void sendMessageToTelegram(Long chatId, String text, AbsSender sender) {
 
 		try {
 			// prepare message
@@ -23,7 +24,7 @@ public class BotHelper {
 			messageToTelegram.setReplyMarkup(keyboardMarkup);
 
 			// send message
-			bot.execute(messageToTelegram);
+			sender.execute(messageToTelegram);
 
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
