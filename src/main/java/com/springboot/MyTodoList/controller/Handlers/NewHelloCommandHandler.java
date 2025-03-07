@@ -1,10 +1,14 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
+import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.model.Usuarios;
+import com.springboot.MyTodoList.controller.DesarrolladorService;
 import com.springboot.MyTodoList.controller.UsuariosService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import oracle.net.aso.m;
 
 import java.util.List;
 
@@ -32,16 +36,29 @@ public class NewHelloCommandHandler implements CommandHandler {
     private static final Logger logger = LoggerFactory.getLogger(NewHelloCommandHandler.class);
 
     private final UsuariosService usuariosService;
+    private final DesarrolladorService desarrolladorService;
 
-    @Autowired  // <-- Inyectar el servicio de manera correcta
-    public NewHelloCommandHandler(UsuariosService usuariosService) {
+
+    @Autowired
+    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService) {
         this.usuariosService = usuariosService;
+        this.desarrolladorService = desarrolladorService;
     }
 
     @Override
     public boolean canHandle(String messageText) {
         return messageText.equals(BotCommands.NEW_HELLO.getCommand()) || 
                messageText.equals(BotLabels.NEW_HELLO.getLabel());
+    }
+
+    private void trymessage(AbsSender sender,String message, SendMessage messageToTelegram) throws TelegramApiException{
+        messageToTelegram.setText(message);
+        try {
+            sender.execute(messageToTelegram);
+        } catch (TelegramApiException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 
     @Override
@@ -52,25 +69,32 @@ public class NewHelloCommandHandler implements CommandHandler {
         messageToTelegram.setChatId(chatId);
 
         String chatidString = String.valueOf(chatId);
-        String message = BotMessages.NEW_HELLO.getMessage() + " " + chatidString + '\n';
+        String message = BotMessages.NEW_HELLO.getMessage();
 
-        message += "Información adicional: \n";
+        trymessage(sender, message, messageToTelegram);
+
+        message = "Información adicional: \n";
 
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
                 
         for (Usuarios usuario : usuarios) {
             message += usuario.toString();
         }
-        message+= "\nRol : ";
-        
-        message+= "Fin de la información adicional";
-        messageToTelegram.setText(message);
 
-        try {
-            sender.execute(messageToTelegram);
-        } catch (TelegramApiException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            throw e;
+        messageToTelegram.setText(message);
+        
+        trymessage(sender, message, messageToTelegram);
+
+        message= "\nRol :\n";
+
+        List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
+        for (Desarrollador des : desarrollador) {
+            message += des.toString();
         }
+        
+        message+= "\nFin de la información adicional";
+
+        messageToTelegram.setText(message);
+        trymessage(sender, message, messageToTelegram);
     }
 }

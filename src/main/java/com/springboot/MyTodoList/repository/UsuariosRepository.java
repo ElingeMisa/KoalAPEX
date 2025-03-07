@@ -68,5 +68,7 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
         "(UPPER(:columna) = 'USUARIOT' AND UPPER(USUARIOT) LIKE UPPER(CONCAT('%', :valor, '%'))) OR " +
         "(UPPER(:columna) = 'ACTIVO' AND :valor IN ('0', '1') AND ACTIVO = TO_NUMBER(:valor))",
         nativeQuery = true)
-List<Usuarios> buscarPorColumnaNativo(@Param("columna") String columna, @Param("valor") String valor);
+    List<Usuarios> buscarPorColumnaNativo(@Param("columna") String columna, @Param("valor") String valor);
+
+    
 }

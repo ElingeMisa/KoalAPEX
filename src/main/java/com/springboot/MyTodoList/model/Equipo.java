@@ -1,26 +1,26 @@
-/*
+/* 
 package com.springboot.MyTodoList.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Equipo")
+@Table(name = "EQUIPO", schema = "TODOUSER")
 public class Equipo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "equipo_seq")
     @SequenceGenerator(name = "equipo_seq", sequenceName = "Equipo_seq", allocationSize = 1)
-    @Column(name = "idEquipo", nullable = false)
+    @Column(name = "IDEQUIPO", nullable = false)
     private Long idEquipo;
 
-    @Column(name = "Nombre", nullable = false, length = 100)
+    @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "Notificacion")
+    @Column(name = "NOTIFICACION")
     private LocalDateTime notificacion;
 
-    @Column(name = "Activo", nullable = false)
+    @Column(name = "ACTIVO", nullable = false)
     private Integer activo = 1;
 
     // Constructores
@@ -66,4 +66,5 @@ public class Equipo {
         this.activo = activo;
     }
 }
-    */
+    
+/* */

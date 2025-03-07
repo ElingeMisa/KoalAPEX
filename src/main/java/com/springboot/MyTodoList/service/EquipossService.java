@@ -1,4 +1,4 @@
-/*
+/* 
 package com.springboot.MyTodoList.service;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class EquipossService {
     }
 
     public ResponseEntity<Equipo> getEquipoById(int id) {
-        Optional<Equipo> equipoData = equipoRepository.findById(id);
+        Optional<Equipo> equipoData = equipoRepository.findById((long) id);
         if (equipoData.isPresent()) {
             return new ResponseEntity<>(equipoData.get(), HttpStatus.OK);
         } else {
@@ -37,7 +37,7 @@ public class EquipossService {
 
     public boolean deleteEquipo(int id) {
         try {
-            equipoRepository.deleteById(id);
+            equipoRepository.deleteById((long) id);
             return true;
         } catch (Exception e) {
             return false;
@@ -45,7 +45,7 @@ public class EquipossService {
     }
 
     public Equipo updateEquipo(int id, Equipo equipo) {
-        Optional<Equipo> equipoData = equipoRepository.findById(id);
+        Optional<Equipo> equipoData = equipoRepository.findById((long) id);
         if (equipoData.isPresent()) {
             Equipo existingEquipo = equipoData.get();
             existingEquipo.setNombre(equipo.getNombre());
@@ -57,4 +57,4 @@ public class EquipossService {
         }
     }
 }
-*/
+/* */
