@@ -40,42 +40,48 @@ function TableComponent() {
         document.body.getAttribute('data-theme') === 'dark' ? setTheme('dark') : setTheme('light');
     }, [theme]);
 
-    const toggleTheme = () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
-    };
-
     // Enables testing mode for when there is no API connection
     const testing_mode = false;
     const test_items = [
       {
         "id": 1,
-        "description": "Test item 1",
-        "done": false,
-        "createdAt": "2022-01-01 14:33:12"
+        "name": "Jane Doe",
+        "category": "Epic",
+        "dueDate": "2022-01-01 14:33:12",
+        "description": "Crear, por medio de las tecnologías puestas a nuestra disposición en a clase de planeación de software, un prototipo que presente las características mínimas viables (definidas en el repositorio base dado por el socio formador) y un servicio adicional que nos diferencie del resto de los equipos.",
+        "estimatedHours": "5",
+        "state": "Active",
+        "done": true
       },
       {
         "id": 2,
-        "description": "Test item 2",
-        "done": true,
-        "createdAt": "2023-02-15 10:45:23"
+        "name": "John Doe",
+        "category": "Feature",
+        "dueDate": "2022-01-02 15:34:13",
+        "description": "Chambea más que no le sabes",
+        "estimatedHours": "6",
+        "state": "Active",
+        "done": false
       },
       {
         "id": 3,
+        "name": "Jane Smith",
+        "category": "Feature",
+        "dueDate": "2022-01-03 16:35:14",
         "description": "Test item 3",
-        "done": false,
-        "createdAt": "2024-03-20 18:55:34"
+        "estimatedHours": 7,
+        "state": "Active",
+        "done": true
       },
       {
         "id": 4,
+        "name": "John Doe",
+        "category": "User Story",
+        "dueDate": "2022-01-04 17:36:15",
         "description": "Test item 4",
-        "done": true,
-        "createdAt": "2025-04-25 22:05:45"
-      },
-      {
-        "id": 5,
-        "description": "Test item 5",
-        "done": false,
-        "createdAt": "2026-05-30 06:15:56"
+        "estimatedHours": 8,
+        "state": "Active",
+        "done": false
       }
     ];
 
@@ -234,7 +240,7 @@ function TableComponent() {
           toggleDone={toggleDone}
           deleteItem={deleteItem}
           isLoading={isLoading}
-          error={error}
+          error={testing_mode ? null : error}
           isInserting={isInserting}
           addItem={addItem}
         />

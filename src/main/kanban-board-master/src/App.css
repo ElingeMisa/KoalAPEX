@@ -14,10 +14,10 @@ body {
   flex: 1;
   width: 100%;
   overflow-x: auto;
-  margin-left: 200px; /* Adjust this value to match the width of the navbar */
-  padding-left: 40px; /* Separates the Navbar and content */
-  padding-top: 80px; /* Separates the content and the page ceiling */
-  padding-right: 60px;
+  margin-left: 14vw; /* Set equal to the navbar width */
+  padding-left: 3vw; /* Separates the navbar and the content */
+  padding-top: 10vh; /* Separates the content and the page ceiling */
+  padding-right: 5vw; /* Separates the content and the page end */
 }
 
 .app_boards {

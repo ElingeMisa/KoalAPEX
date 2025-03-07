@@ -1,5 +1,12 @@
+:root {
+  --toggle-width: 3vw;
+  --toggle-height: 1.5vh;
+  --ball-size: 1.5vw;
+  --ball-translate: 2vw;
+}
+
 .navbar {
-  width: 200px; /* Adjust the width as needed */
+  width: 14vw; /* Adjust the width as needed */
   height: 100%; /* Full height */
   border-right: 1px solid #ccc; /* Border on the right */
   display: flex;
@@ -16,8 +23,16 @@
 }
 
 .navbar-header {
-  margin-bottom: 2rem; /* Add some space below the heading */
+  margin-bottom: 8vh; /* Add some space below the heading */
   justify-items: end;
+}
+
+.navbar-header h3 {
+  font-size: 2vw;
+}
+
+.navbar-header h6 {
+  font-size: 1.3vw;
 }
 
 .navbar-header img {
@@ -80,21 +95,25 @@
 .navbar-item {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 1vh 1vw; /* Use viewport units for padding */
   cursor: pointer;
   color: var(--text-color);
+  font-size: 2vw; /* Use viewport units for font size */
+  margin-bottom: 20px;
 }
 
 .navbar-item i {
-  margin-right: 10px;
+  margin-right: 1vw; /* Use viewport units for margin */
 }
 
 .navbar-item span {
-  font-size: 14px;
+  font-size: 1.2vw; /* Use viewport units for font size */
 }
 
 .navbar-item.selected {
   outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+  border-radius: 5px;
 }
 
 [data-theme="dark"] .navbar-item {

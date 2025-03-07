@@ -20,17 +20,27 @@ function TableContent({ items, toggleDone, deleteItem, isLoading, error, isInser
           <Table className="Table">
             <TableHead className="TableHead">
               <TableRow>
-                <TableCell className="TableCell">Description</TableCell>
-                <TableCell className="TableCell">Date</TableCell>
-                <TableCell className="TableCell">Action</TableCell>
+                <TableCell className="TableCell">ID</TableCell>
+                <TableCell className="TableCell">Nombre</TableCell>
+                <TableCell className="TableCell">Categoría</TableCell>
+                <TableCell className="TableCell">Fecha de Entrega</TableCell>
+                <TableCell className="TableCell">Descripción</TableCell>
+                <TableCell className="TableCell">Horas Estimadas</TableCell>
+                <TableCell className="TableCell">Estado</TableCell>
+                <TableCell className="TableCell">Acción</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map(item => (
                 !item.done && (
                   <TableRow key={item.id} className="TableRow">
+                    <TableCell className="TableCell">{item.id}</TableCell>
+                    <TableCell className="TableCell">{item.name}</TableCell>
+                    <TableCell className="TableCell">{item.category}</TableCell>
+                    <TableCell className="TableCell">{item.dueDate}</TableCell>
                     <TableCell className="TableCell">{item.description}</TableCell>
-                    <TableCell className="TableCell">{dayjs(item.createdAt).format('MMM D hh:mm:ss')}</TableCell>
+                    <TableCell className="TableCell">{item.estimatedHours}</TableCell>
+                    <TableCell className="TableCell">{item.state}</TableCell>
                     <TableCell className="TableCell">
                       <Button variant="contained" className="DoneButton" onClick={(event) => toggleDone(event, item.id, item.description, !item.done)} size="small">
                         Done
@@ -46,17 +56,27 @@ function TableContent({ items, toggleDone, deleteItem, isLoading, error, isInser
           <Table className="Table">
             <TableHead className="TableHead">
               <TableRow>
-                <TableCell>Description</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell className="TableCell">ID</TableCell>
+                <TableCell className="TableCell">Nombre</TableCell>
+                <TableCell className="TableCell">Categoría</TableCell>
+                <TableCell className="TableCell">Fecha de Entrega</TableCell>
+                <TableCell className="TableCell">Descripción</TableCell>
+                <TableCell className="TableCell">Horas Estimadas</TableCell>
+                <TableCell className="TableCell">Estado</TableCell>
+                <TableCell className="TableCell">Acción</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map(item => (
                 item.done && (
                   <TableRow key={item.id} className="TableRow">
+                    <TableCell className="TableCell">{item.id}</TableCell>
+                    <TableCell className="TableCell">{item.name}</TableCell>
+                    <TableCell className="TableCell">{item.category}</TableCell>
+                    <TableCell className="TableCell">{item.dueDate}</TableCell>
                     <TableCell className="TableCell">{item.description}</TableCell>
-                    <TableCell className="TableCell">{dayjs(item.createdAt).format('MMM D hh:mm:ss')}</TableCell>
+                    <TableCell className="TableCell">{item.estimatedHours}</TableCell>
+                    <TableCell className="TableCell">{item.state}</TableCell>
                     <TableCell className="TableCell">
                       <Button variant="contained" className="DoneButton" onClick={(event) => toggleDone(event, item.id, item.description, !item.done)} size="small">
                         Undo

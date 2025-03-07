@@ -26,13 +26,21 @@
   }
   
   #newiteminput:focus {
-    outline: none;
+    outline: invert;
     border-color: #614caf;
   }
   
-  .AddButton {
-    padding: 10px 20px;
+  [data-theme="light"] .AddButton {
     color: #FFF;
+    background-color: var(--done-button-background-color-light);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  [data-theme="dark"] .AddButton {
+    color: #FFF;
+    background-color: var(--done-button-background-color-dark);
     border: none;
     border-radius: 5px;
     font-size: 16px;

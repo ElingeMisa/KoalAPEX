@@ -1,5 +1,8 @@
 /* Define CSS variables for dark and light themes */
 :root {
+    --progress-color: #4CAF50;
+    --error-message-color: #F44336;
+
     --background-color-dark: #1E1E1E;
     --text-color-dark: #E0E0E0;
     --container-background-color-dark: #2E2E2E;
@@ -9,8 +12,6 @@
     --table-row-hover-color-dark: #333;
     --done-button-background-color-dark: #4CAF50;
     --delete-button-background-color-dark: #F44336;
-    --progress-color-dark: #4CAF50;
-    --error-message-color-dark: #F44336;
 
     --background-color-light: #FFFFFF;
     --text-color-light: #000000;
@@ -21,8 +22,6 @@
     --table-row-hover-color-light: #EEE;
     --done-button-background-color-light: #4CAF50;
     --delete-button-background-color-light: #F44336;
-    --progress-color-light: #4CAF50;
-    --error-message-color-light: #F44336;
 }
 
 /* Apply global styles */
@@ -32,7 +31,7 @@
 }
 
 .TableCell {
-    width: 33%;
+    width: calc(100% / 8); /* number of columns */
     text-align: center;
     vertical-align: middle;
     display: flex;
@@ -44,6 +43,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.DoneButton, .DeleteButton {
+    color: #FFF;
+}
+
+.DoneButton:hover, .DeleteButton:hover {
+    opacity: 0.8;
+}
+
+.CircularProgress {
+    color: var(--progress-color);
+}
+
+.ErrorMessage {
+    color: var(--error-message-color);
 }
 
 /* Apply dark theme styles */
@@ -76,29 +91,13 @@
     background: var(--table-row-hover-color-dark);
 }
 
-[data-theme="dark"] .DoneButton, [data-theme="dark"] .DeleteButton {
-    color: #FFF;
-}
-
 [data-theme="dark"] .DoneButton {
     background-color: var(--done-button-background-color-dark);
 }
-
 [data-theme="dark"] .DeleteButton {
     background-color: var(--delete-button-background-color-dark);
 }
 
-[data-theme="dark"] .DoneButton:hover, [data-theme="dark"] .DeleteButton:hover {
-    opacity: 0.8;
-}
-
-[data-theme="dark"] .CircularProgress {
-    color: var(--progress-color-dark);
-}
-
-[data-theme="dark"] .ErrorMessage {
-    color: var(--error-message-color-dark);
-}
 
 /* Apply light theme styles */
 [data-theme="light"] .TableContainer {
@@ -130,26 +129,9 @@
     background: var(--table-row-hover-color-light);
 }
 
-[data-theme="light"] .DoneButton, [data-theme="light"] .DeleteButton {
-    color: #FFF;
-}
-
 [data-theme="light"] .DoneButton {
     background-color: var(--done-button-background-color-light);
 }
-
 [data-theme="light"] .DeleteButton {
     background-color: var(--delete-button-background-color-light);
-}
-
-[data-theme="light"] .DoneButton:hover, [data-theme="light"] .DeleteButton:hover {
-    opacity: 0.8;
-}
-
-[data-theme="light"] .CircularProgress {
-    color: var(--progress-color-light);
-}
-
-[data-theme="light"] .ErrorMessage {
-    color: var(--error-message-color-light);
 }
