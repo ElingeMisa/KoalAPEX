@@ -44,12 +44,19 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
     @Query("SELECT u FROM Usuarios u WHERE u.tokenChannel = :tokenChannel")
     List<Usuarios> findByTokenChannel(@Param("tokenChannel") String tokenChannel);
 
-    
-    // MÉTODOS USANDO LOS NOMBRES DE LAS PROPIEDADES JAVA
+    @Query("SELECT u FROM Usuarios u WHERE u.nombre = :nombre")
     List<Usuarios> findByNombreContaining(String nombre);
+
+    @Query("SELECT u FROM Usuarios u WHERE u.correo = :correo")
     List<Usuarios> findByCorreoContaining(String correo);
+
+    @Query("SELECT u FROM Usuarios u WHERE u.telefono = :telefono")
     List<Usuarios> findByTelefonoContaining(String telefono);
+
+    @Query("SELECT u FROM Usuarios u WHERE u.usuarioT = :usuarioT")
     List<Usuarios> findByUsuarioTContaining(String usuarioT);
+
+    @Query("SELECT u FROM Usuarios u WHERE u.activo = :activo")
     List<Usuarios> findByActivo(int activo);
      
     // SQL NATIVO PARA ORACLE - AQUÍ SÍ USAMOS LOS NOMBRES DE LAS COLUMNAS DE LA BASE DE DATOS

@@ -61,7 +61,9 @@ public class NewHelloCommandHandler implements CommandHandler {
         for (Usuarios usuario : usuarios) {
             message += usuario.toString();
         }
-
+        message+= "\nRol : ";
+        
+        message+= "Fin de la información adicional";
         messageToTelegram.setText(message);
 
         try {

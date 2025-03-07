@@ -88,13 +88,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
             try {
                 // Los items nuevos se manejan de manera especial
-
                 if (newToDoItemHandler.isExpectingNewItem()) {
                     newToDoItemHandler.handleNewItemText(update, this);
                     return;
                 }
                 // Recorremos los comandos para ver si alguno coincide con el comando recibido
                 boolean handled = false;
+                
                 for (CommandHandler handler : commandHandlers) {
 
                     if (handler.canHandle(messageTextFromTelegram)) {
@@ -118,6 +118,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
                     messageToTelegram.setText(feedback);
                     execute(messageToTelegram);
                     
+
                 }
             } catch (TelegramApiException e) {
                 logger.error("Error handling update: " + e.getLocalizedMessage(), e);

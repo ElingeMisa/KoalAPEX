@@ -151,14 +151,14 @@ public class Usuarios {
 
     @Override
     public String toString() {
-        return "Usuarios{" +
+        return "Usuarios\n{\n\t\t\t" +
                 "id=" + idUsuario +
-                ", nombre='" + nombre + '\'' +
-                ", correo='" + correo + '\'' +
-                ", tokenChannel='" + tokenChannel + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", usuarioT='" + usuarioT + '\'' +
-                ", activo=" + activo +
-                '}';
+                ",\n\t\t\tnombre='" + nombre + '\'' +
+                ",\n\t\t\tncorreo='" + correo + '\'' +
+                ",\n\t\t\ttokenChannel='" + tokenChannel + '\'' +
+                ",\n\t\t\ttelefono='" + telefono + '\'' +
+                ",\n\t\t\tusuarioT='" + usuarioT + '\'' +
+                ",\n\t\t\tactivo=" + activo +
+                '\n' + '}';
     }
 }
