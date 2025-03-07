@@ -7,122 +7,158 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /*
- CREATE TABLE TODOUSER.Usuarios (
-    idUsuario NUMBER PRIMARY KEY,
-    Nombre VARCHAR2(100) NOT NULL,
-    Correo VARCHAR2(100) NOT NULL,
-    TokenChannel VARCHAR2(100) NULL,
-    Telefono VARCHAR2(100) NOT NULL,
-    UsuarioT VARCHAR2(100) NULL,
-    Activo NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))
-);
+CREATE TABLE "TODOUSER"."USUARIOS" 
+   (	"IDUSUARIO" NUMBER, 
+	"NOMBRE" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"CORREO" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"TOKENCHANNEL" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"TELEFONO" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"USUARIOT" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"ACTIVO" NUMBER(1,0) DEFAULT 1
+   )  DEFAULT COLLATION "USING_NLS_COMP" ;
+
+ALTER TABLE "TODOUSER"."USUARIOS" MODIFY ("NOMBRE" NOT NULL ENABLE);
+
+ALTER TABLE "TODOUSER"."USUARIOS" MODIFY ("CORREO" NOT NULL ENABLE);
+
+ALTER TABLE "TODOUSER"."USUARIOS" MODIFY ("TELEFONO" NOT NULL ENABLE);
+
+ALTER TABLE "TODOUSER"."USUARIOS" ADD CHECK (Activo IN (0,1)) ENABLE;
+
+ALTER TABLE "TODOUSER"."USUARIOS" ADD PRIMARY KEY ("IDUSUARIO")
+  USING INDEX  ENABLE;
+
  */
 // Clase Usuarios
 
+
 @Entity
-@Table(name = "Usuarios")
+@Table(name = "USUARIOS", schema = "TODOUSER")
 public class Usuarios {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int ID;
-    @Column(name = "Nombre")
-    String Nombre;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "USUARIO_SEQ", allocationSize = 1)
+    @Column(name = "IDUSUARIO")
+    private Long idUsuario;
     
-    @Column(name = "Correo")
-    String Correo;
+    @Column(name = "NOMBRE")
+    private String nombre;
+    
+    @Column(name = "CORREO")
+    private String correo;
 
-    @Column(name = "TokenChannel")
-    String TokenChannel;
+    @Column(name = "TOKENCHANNEL")
+    private String tokenChannel;
 
-    @Column(name = "Telefono")
-    String Telefono;
+    @Column(name = "TELEFONO")
+    private String telefono;
 
-    @Column(name = "UsuarioT")
-    String UsuarioT;
+    @Column(name = "USUARIOT")
+    private String usuarioT;
 
-    @Column(name = "Activo")
-    int Activo;
+    @Column(name = "ACTIVO")
+    private int activo;
 
     // Constructores
     public Usuarios() {
-
-        this.ID = 0;
-        this.Nombre = "usuario";
-        this.Correo = "correo@ejemplo.com";
-        this.TokenChannel = "token1234";
-        this.Telefono = "telefono";
-        this.UsuarioT = "usuarioT@telegram";
-        this.Activo = 1;
-
+        this.idUsuario = 0L;
+        this.nombre = "usuario";
+        this.correo = "correo@ejemplo.com";
+        this.tokenChannel = "token1234";
+        this.telefono = "telefono";
+        this.usuarioT = "usuarioT@telegram";
+        this.activo = 1;
     }
 
-    public Usuarios(int iD, String nombre, String correo, String telefono) {
-        
-        this.ID = iD;
-        this.Nombre = nombre;
-        this.Correo = correo;
-        this.Telefono = telefono;
-
+    public Usuarios(long id, String nombre, String correo, String telefono) {
+        this.idUsuario = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
     }
 
-    public Usuarios(int iD, String nombre, String correo, String tokenChannel, String telefono, String usuarioT, int activo) {
-        
-        this.ID = iD;
-        this.Nombre = nombre;
-        this.Correo = correo;
-        this.TokenChannel = tokenChannel;
-        this.Telefono = telefono;
-        this.UsuarioT = usuarioT;
-        this.Activo = activo;
-
+    public Usuarios(long id, String nombre, String correo, String tokenChannel, String telefono, String usuarioT, int activo) {
+        this.idUsuario = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.tokenChannel = tokenChannel;
+        this.telefono = telefono;
+        this.usuarioT = usuarioT;
+        this.activo = activo;
     }
-    // Metodos Get y Set
-    //#region Get y Set
-    public int getID() {
-        return ID;
+    
+    // Getters y Setters
+    public long getId() {
+        return this.idUsuario;
     }
-    public void setID(int iD) {
-        this.ID = iD;
+    
+    public void setId(long id) {
+        this.idUsuario = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
+    
     public void setNombre(String nombre) {
-        this.Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
+    
     public void setCorreo(String correo) {
-        this.Correo = correo;
+        this.correo = correo;
+    }
+    
+    public String getTokenChannel() {
+        return tokenChannel;
+    }
+    
+    public void setTokenChannel(String tokenChannel) {
+        this.tokenChannel = tokenChannel;
     }
 
     public String getTelefono() {
-        return Telefono;
+        return telefono;
     }
+    
     public void setTelefono(String telefono) {
-        this.Telefono = telefono;
+        this.telefono = telefono;
     }
-    //#endregion
+    
+    public String getUsuarioT() {
+        return usuarioT;
+    }
+    
+    public void setUsuarioT(String usuarioT) {
+        this.usuarioT = usuarioT;
+    }
+    
+    public int getActivo() {
+        return activo;
+    }
+    
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }
 
     @Override
     public String toString() {
         return "Usuarios{" +
-                "ID=" + ID +
-                ", Nombre='" + Nombre + '\'' +
-                ", Correo='" + Correo + '\'' +
-                ", TokenChannel='" + TokenChannel + '\'' +
-                ", Telefono='" + Telefono + '\'' +
-                ", UsuarioT='" + UsuarioT + '\'' +
-                ", Activo=" + Activo +
+                "id=" + idUsuario +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", tokenChannel='" + tokenChannel + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", usuarioT='" + usuarioT + '\'' +
+                ", activo=" + activo +
                 '}';
     }
-    
-} 
- 
+}

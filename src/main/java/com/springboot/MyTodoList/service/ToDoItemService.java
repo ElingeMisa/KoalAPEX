@@ -15,6 +15,7 @@ public class ToDoItemService {
 
     @Autowired
     private ToDoItemRepository toDoItemRepository;
+    
     public List<ToDoItem> findAll(){
         List<ToDoItem> todoItems = toDoItemRepository.findAll();
         return todoItems;

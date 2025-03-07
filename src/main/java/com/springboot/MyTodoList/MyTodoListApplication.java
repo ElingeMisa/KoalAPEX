@@ -12,10 +12,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
+import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotMessages;
 
-@SpringBootApplication
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication(scanBasePackages = "com.springboot.MyTodoList")
+@EnableJpaRepositories("com.springboot.MyTodoList.repository")
 public class MyTodoListApplication implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyTodoListApplication.class);
@@ -29,6 +35,9 @@ public class MyTodoListApplication implements CommandLineRunner {
 	@Value("${telegram.bot.name}")
 	private String botName;
 
+	@Autowired  // Agregar la inyección de NewHelloCommandHandler
+	private NewHelloCommandHandler newHelloCommandHandler;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyTodoListApplication.class, args);
 	}
@@ -37,10 +46,12 @@ public class MyTodoListApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService));
+			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService, newHelloCommandHandler));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
 	}
 }
+
+

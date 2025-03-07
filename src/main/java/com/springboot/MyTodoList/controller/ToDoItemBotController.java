@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,24 +55,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     private final NewToDoItemHandler newToDoItemHandler;
     private final String botName;
 
-    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService) {
+    private final NewHelloCommandHandler newHelloCommandHandler;
+
+    @Autowired 
+    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, NewHelloCommandHandler newHelloCommandHandler) {
         super(botToken);
         logger.info("Bot Token: " + botToken);
         logger.info("Bot name: " + botName);
         this.botName = botName;
+        this.newHelloCommandHandler = newHelloCommandHandler;  // <-- Guardamos la instancia inyectada
+
         // Initialize handlers
         newToDoItemHandler = new NewToDoItemHandler(toDoItemService);
-        // Flujos de comandos 
+        
+        // Flujos de comandos
         commandHandlers.add(new StartCommandHandler());
         commandHandlers.add(new ListItemsCommandHandler(toDoItemService));
         commandHandlers.add(new AddItemCommandHandler(toDoItemService));
         commandHandlers.add(new ItemActionHandler(toDoItemService));
-        commandHandlers.add(new NewHelloCommandHandler());
+        commandHandlers.add(newHelloCommandHandler);  // <-- Usamos la instancia inyectada
         commandHandlers.add(new HideCommandHandler());
-        // Se debe agregar al final para que sea el ultimo en ser llamado (regresa que no encajo en ningun comando)
         commandHandlers.add(new DefaultCommandHandler());
-
-        
     }
     
     @Override

@@ -42,7 +42,7 @@ public class UsuariosController {
     public ResponseEntity<Usuarios> addUsuarios(@RequestBody Usuarios usuario) throws Exception{
         Usuarios newUsuario = usuariosService.addUsuario(usuario);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("location", "" + newUsuario.getID());
+        responseHeaders.set("location", "" + newUsuario.getId());
         responseHeaders.set("Access-Control-Expose-Headers", "location");
 
         return ResponseEntity.ok()

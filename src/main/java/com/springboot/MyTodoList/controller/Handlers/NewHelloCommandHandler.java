@@ -6,7 +6,7 @@ import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
 
-
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,29 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.springboot.MyTodoList.repository.UsuariosRepository;
+
+
 
 /**
  * Handles the new hello command
  */
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+/**
+ * Handles the new hello command
+ */
+@Component  // <-- Agregar esta anotación para que Spring gestione esta clase
 public class NewHelloCommandHandler implements CommandHandler {
     private static final Logger logger = LoggerFactory.getLogger(NewHelloCommandHandler.class);
 
-    private final UsuariosService usuariosService = null;
+    private final UsuariosService usuariosService;
+
+    @Autowired  // <-- Inyectar el servicio de manera correcta
+    public NewHelloCommandHandler(UsuariosService usuariosService) {
+        this.usuariosService = usuariosService;
+    }
 
     @Override
     public boolean canHandle(String messageText) {
@@ -36,10 +51,19 @@ public class NewHelloCommandHandler implements CommandHandler {
         SendMessage messageToTelegram = new SendMessage();
         messageToTelegram.setChatId(chatId);
 
-        String chatidString = toString().valueOf(chatId);
-        String message = BotMessages.NEW_HELLO.getMessage() + " " + chatidString;
+        String chatidString = String.valueOf(chatId);
+        String message = BotMessages.NEW_HELLO.getMessage() + " " + chatidString + '\n';
+
+        message += "Información adicional: \n";
+
+        List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
+                
+        for (Usuarios usuario : usuarios) {
+            message += usuario.toString();
+        }
+
         messageToTelegram.setText(message);
-        
+
         try {
             sender.execute(messageToTelegram);
         } catch (TelegramApiException e) {
