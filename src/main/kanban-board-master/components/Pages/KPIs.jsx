@@ -153,7 +153,7 @@ export default function KPIs() {
   const [activeBoard, setActiveBoard] = useState(null);
 
   // testing mode
-  const testing_mode = false;
+  const testing_mode = true;
   const test_items = [{
     title: "Solicitudes Emergentes",
     tags: [{ tagName: "+5.2%", color: "#C74634" }],

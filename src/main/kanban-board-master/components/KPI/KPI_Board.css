@@ -4,7 +4,6 @@
   width: 100%;
   padding: 32px;
   display: flex;
-  flex-direction: column;
 }
 
 .kpi_board__top {
@@ -14,14 +13,11 @@
   margin-bottom: 16px;
 }
 
-.kpi_board__title {
-  font-size: 18px;
-}
-
 .kpi_board__cards {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  align-content: flex-start;
 }
 
 .kpi_board__footer {

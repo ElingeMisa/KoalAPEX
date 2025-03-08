@@ -1,19 +1,19 @@
 :root {
   --kpi-card-bg-color-dark: #333;
-  --kpi-box-shadow-dark: 0 1px 4px rgba(117, 117, 117, 0.3);
+  --kpi-box-shadow-dark: 0 0.1vw 0.6vh rgba(117, 117, 117, 0.3);
   --kpi-text-color-dark: #fff;
 
   --kpi-card-bg-color-light: #efefef;
-  --kpi-box-shadow-light: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --kpi-box-shadow-light: 0 0.1vw 0.6vh rgba(0, 0, 0, 0.3);
   --kpi-text-color-light: #000000;
 }
 
 /* Global styles */
 .kpi_custom__card {
-  border-radius: 8px;
-  width: 25%;
+  border-radius: 0.5vh;
+  width: 34%;
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 0.2vw;
 }
 
 .kpi_card__content {
@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  padding-left: 32px;
+  padding-left: 2vw;
 }
 
 .kpi_card__left {
@@ -33,42 +33,43 @@
 }
 
 .kpi_card__right {
-  display:inline;
-  align-items: start;
-  justify-content: start;
+  display: inline;
+  align-items: center;
+  justify-content: flex-start;
   flex-grow: 1;
 }
 
 .kpi_title {
-  font-size: 16px;
+  font-size: 1.1vw;
   font-weight: bold;
   text-align: center;
 }
 
 .kpi_data {
-  font-size: clamp(1rem, 5vw, 50px);
+  font-size: 3vw;
   font-weight: bold;
   text-align: center;
 }
 
 .kpi_card__tags {
-  margin-top: 8px;
+  margin-top: 1vh;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5vh;
 }
 
 .kpi_tag {
-  border-radius: 12px;
-  padding: 4px 8px;
+  border-radius: 1vw;
+  padding: 0.5vh 1vw;
   color: #fff;
+  font-size: 0.8vw;
 }
 
 .kpi_card__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 3vh;
 }
 
 /* Apply dark theme styles */

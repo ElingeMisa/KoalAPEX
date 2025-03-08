@@ -1,6 +1,7 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 350ms;
 }
 .App {
   height: 100vh;

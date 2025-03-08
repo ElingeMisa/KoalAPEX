@@ -182,6 +182,7 @@ function TableComponent() {
           (result) => {
             setLoading(false);
             setItems(result);
+            console.log(result);
           },
           (error) => {
             setLoading(false);

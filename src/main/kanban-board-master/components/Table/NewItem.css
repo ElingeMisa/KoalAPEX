@@ -47,7 +47,7 @@
   }
   
   .AddButton:hover {
-    background-color: #614caf;
+    opacity: 0.8;
     cursor: pointer;
   }
   
