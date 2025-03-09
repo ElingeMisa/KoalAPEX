@@ -11,7 +11,7 @@
  * @author  jean.de.lavarene@oracle.com
  */
 import React, { useState, useEffect } from 'react';
-import API_LIST from '../API/API';
+import API from '../API/API';
 import TableContent from './TableContent';
 
 /* In this application we're using Function Components with the State Hooks
@@ -35,6 +35,8 @@ function TableComponent() {
 
     // Manages the theme of the table
     const [theme, setTheme] = useState('light');
+
+    const API_LIST = API.TAREAS;
 
     useEffect(() => {
         document.body.getAttribute('data-theme') === 'dark' ? setTheme('dark') : setTheme('light');

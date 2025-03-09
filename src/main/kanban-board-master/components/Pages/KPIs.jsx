@@ -9,6 +9,31 @@ export default function KPIs() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
 
+  //const API_LIST = API_LIST.TODOLIST;
+
+  // testing mode
+  const testing_mode = true;
+  const test_items = [{
+    title: "Solicitudes Emergentes",
+    tags: [{ tagName: "+5.2%", color: "#C74634" }],
+    data: "8",
+  },
+  {
+    title: "Tareas Activas",
+    tags: [{ tagName: "+0%", color: "#7F7F7F" }],
+    data: "17"
+  },
+  {
+    title: "Tareas por Desarrollador",
+    tags: [{ tagName: "-1.2%", color: "#C74634" }],
+    data: "3.5"
+  },
+  {
+    title: "Desfase Promedio",
+    tags: [{ tagName: "+11%", color: "#33553C" }],
+    data: "-1.5H"
+  }];
+
   // Fetch data from API
   function reloadOneIteam(id) {
     fetch(API_LIST + "/" + id)
@@ -151,29 +176,6 @@ export default function KPIs() {
   }, [data]);
 
   const [activeBoard, setActiveBoard] = useState(null);
-
-  // testing mode
-  const testing_mode = true;
-  const test_items = [{
-    title: "Solicitudes Emergentes",
-    tags: [{ tagName: "+5.2%", color: "#C74634" }],
-    data: "8",
-  },
-  {
-    title: "Tareas Activas",
-    tags: [{ tagName: "+0%", color: "#7F7F7F" }],
-    data: "17"
-  },
-  {
-    title: "Tareas por Desarrollador",
-    tags: [{ tagName: "-1.2%", color: "#C74634" }],
-    data: "3.5"
-  },
-  {
-    title: "Desfase Promedio",
-    tags: [{ tagName: "+11%", color: "#33553C" }],
-    data: "-1.5H"
-  }];
 
   useEffect(() => {
     data.length === 0

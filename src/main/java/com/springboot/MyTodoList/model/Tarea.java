@@ -1,8 +1,19 @@
-/*/
+
 package com.springboot.MyTodoList.model;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Tarea")
@@ -14,26 +25,29 @@ public class Tarea {
     @Column(name = "idTarea", nullable = false)
     private Integer idTarea;
 
-    @Column(name = "Descripcion", length = 100)
-    private String descripcion;
+    @Column(name = "description", length = 100)
+    private String description;
 
-    @Column(name = "FechaEntrega")
-    private LocalDateTime fechaEntrega;
+    @Column(name = "dueDate")
+    private LocalDateTime dueDate;
 
-    @Column(name = "Horas_Estimadas", columnDefinition = "NUMBER DEFAULT 2")
-    private Integer horasEstimadas = 2;
+    @Column(name = "estimatedHours", columnDefinition = "NUMBER DEFAULT 2")
+    private Integer estimatedHours = 2;
 
-    @Column(name = "Horas_Reales", length = 100)
+    @Column(name = "horasReales", length = 100)
     private String horasReales = "2";
 
-    @Column(name = "Activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")
+    @Column(name = "activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (activo IN (0,1))")
     private Integer activo = 1;
 
-    @Column(name = "Estado", length = 100)
-    private String estado = "Activo";
+    @Column(name = "state", length = 100)
+    private String state = "Activo";
 
-    @Column(name = "Categoria", length = 100)
-    private String categoria = "Tarea";
+    @Column(name = "category", length = 100)
+    private String category = "Tarea";
+
+    @Column(name = "done", columnDefinition = "NUMBER(1) DEFAULT 0 CHECK (done IN (0,1))")
+    private boolean done = false;
 
     @ManyToOne
     @JoinColumn(name = "idDesarrollador", referencedColumnName = "idDesarrollador", nullable = true)
@@ -50,16 +64,16 @@ public class Tarea {
     // Constructores
     public Tarea() {}
 
-    public Tarea(Integer idTarea, String descripcion, LocalDateTime fechaEntrega, Integer horasEstimadas, String horasReales,
-                 Integer activo, String estado, String categoria, Desarrollador desarrollador, Proyecto proyecto, Sprint sprint) {
+    public Tarea(Integer idTarea, String description, LocalDateTime dueDate, Integer estimatedHours, String horasReales,
+                 Integer activo, String state, String category, Desarrollador desarrollador, Proyecto proyecto, Sprint sprint) {
         this.idTarea = idTarea;
-        this.descripcion = descripcion;
-        this.fechaEntrega = fechaEntrega;
-        this.horasEstimadas = horasEstimadas;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.estimatedHours = estimatedHours;
         this.horasReales = horasReales;
         this.activo = activo;
-        this.estado = estado;
-        this.categoria = categoria;
+        this.state = state;
+        this.category = category;
         this.desarrollador = desarrollador;
         this.proyecto = proyecto;
         this.sprint = sprint;
@@ -75,27 +89,27 @@ public class Tarea {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescripcion(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getFechaEntrega() {
-        return fechaEntrega;
+        return dueDate;
     }
 
-    public void setFechaEntrega(LocalDateTime fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
+    public void setFechaEntrega(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Integer getHorasEstimadas() {
-        return horasEstimadas;
+        return estimatedHours;
     }
 
-    public void setHorasEstimadas(Integer horasEstimadas) {
-        this.horasEstimadas = horasEstimadas;
+    public void setHorasEstimadas(Integer estimatedHours) {
+        this.estimatedHours = estimatedHours;
     }
 
     public String getHorasReales() {
@@ -115,19 +129,19 @@ public class Tarea {
     }
 
     public String getEstado() {
-        return estado;
+        return state;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstado(String state) {
+        this.state = state;
     }
 
     public String getCategoria() {
-        return categoria;
+        return category;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setCategoria(String category) {
+        this.category = category;
     }
 
     public Desarrollador getDesarrollador() {
@@ -153,5 +167,27 @@ public class Tarea {
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
     }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "ID=" + idTarea +
+                ", description='" + description + '\'' +
+                ", dueDate=" + dueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH)) +
+                ", estimatedHours=" + estimatedHours +
+                ", horasReales='" + horasReales + '\'' +
+                ", activo=" + activo +
+                ", state='" + state + '\'' +
+                ", category='" + category + '\'' +
+                ", done=" + done +
+                '}';
+    }
 }
-*/

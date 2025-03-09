@@ -1,4 +1,3 @@
-/*
 package com.springboot.MyTodoList.service;
 
 import java.util.List;
@@ -23,8 +22,15 @@ public class TareassService {
 
     public ResponseEntity<Tarea> getTareaById(int id) {
         Optional<Tarea> tareaData = tareaRepository.findById(id);
+        if (tareaData.isPresent()){
+            return new ResponseEntity<>(tareaData.get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        /*
         return tareaData.map(tarea -> new ResponseEntity<>(tarea, HttpStatus.OK))
                         .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        */
     }
 
     public Tarea addTarea(Tarea tarea) {
@@ -54,10 +60,10 @@ public class TareassService {
             existingTarea.setDesarrollador(tarea.getDesarrollador());
             existingTarea.setProyecto(tarea.getProyecto());
             existingTarea.setSprint(tarea.getSprint());
+            existingTarea.setDone(tarea.isDone());
             return tareaRepository.save(existingTarea);
         } else {
             return null;
         }
     }
 }
-*/
