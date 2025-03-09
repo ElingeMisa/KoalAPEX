@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
     in the autonomous database
  */
 @Entity
-@Table(name = "TODOITEM")
+@Table(name = "TODOITEM", schema = "TODOUSER")
 public class ToDoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,7 @@ public class ToDoItem {
     OffsetDateTime creation_ts;
     @Column(name = "done")
     boolean done;
+    
     public ToDoItem(){
 
     }

@@ -1,54 +1,108 @@
-/*/
 package com.springboot.MyTodoList.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+/*
+ CREATE TABLE "TODOUSER"."TAREA" 
+   (	"IDTAREA" NUMBER, 
+	"DESCRIPCION" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"FECHAENTREGA" TIMESTAMP (6), 
+	"HORAS_ESTIMADAS" NUMBER DEFAULT 2, 
+	"HORAS_REALES" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP" DEFAULT '2', 
+	"ACTIVO" NUMBER(1,0) DEFAULT 1, 
+	"ESTADO" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP" DEFAULT 'Activo', 
+	"CATEGORIA" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP" DEFAULT 'Tarea', 
+	"IDDESARROLLADOR" NUMBER, 
+	"IDPROYECTO" NUMBER, 
+	"IDSPRINT" NUMBER
+   )  DEFAULT COLLATION "USING_NLS_COMP" ;
 
+    ALTER TABLE "TODOUSER"."TAREA" ADD CHECK (Activo IN (0,1)) ENABLE;
+
+    ALTER TABLE "TODOUSER"."TAREA" ADD PRIMARY KEY ("IDTAREA")
+    USING INDEX  ENABLE;
+
+    ALTER TABLE "TODOUSER"."TAREA" ADD CONSTRAINT "FK_TAREA_DESARROLLADOR" FOREIGN KEY ("IDDESARROLLADOR")
+        REFERENCES "TODOUSER"."DESARROLLADOR" ("IDDESARROLLADOR") ENABLE;
+
+    ALTER TABLE "TODOUSER"."TAREA" ADD CONSTRAINT "FK_TAREA_PROYECTO" FOREIGN KEY ("IDPROYECTO")
+        REFERENCES "TODOUSER"."PROYECTO" ("IDPROYECTO") ENABLE;
+
+    ALTER TABLE "TODOUSER"."TAREA" ADD CONSTRAINT "FK_TAREA_SPRINT" FOREIGN KEY ("IDSPRINT")
+        REFERENCES "TODOUSER"."SPRINT" ("IDSPRINT") ENABLE;
+
+    CREATE OR REPLACE EDITIONABLE TRIGGER "TODOUSER"."TAREA_TRG" 
+    BEFORE INSERT ON TODOUSER.Tarea
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.idTarea IS NULL THEN
+            SELECT Tarea_seq.NEXTVAL INTO :NEW.idTarea FROM DUAL;
+        END IF;
+    END;
+
+    /
+    ALTER TRIGGER "TODOUSER"."TAREA_TRG" ENABLE;
+ */
+
+ 
 @Entity
-@Table(name = "Tarea")
+@Table(name = "Tarea", schema = "TODOUSER")
 public class Tarea {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tarea_seq")
     @SequenceGenerator(name = "tarea_seq", sequenceName = "Tarea_seq", allocationSize = 1)
-    @Column(name = "idTarea", nullable = false)
+    @Column(name = "IDTAREA", nullable = false)
     private Integer idTarea;
 
-    @Column(name = "Descripcion", length = 100)
+    @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
 
-    @Column(name = "FechaEntrega")
+    @Column(name = "FECHAENTREGA")
     private LocalDateTime fechaEntrega;
 
-    @Column(name = "Horas_Estimadas", columnDefinition = "NUMBER DEFAULT 2")
+    @Column(name = "HORAS_ESTIMADAS", columnDefinition = "NUMBER DEFAULT 2")
     private Integer horasEstimadas = 2;
 
-    @Column(name = "Horas_Reales", length = 100)
+    @Column(name = "HORAS_REALES", length = 100)
     private String horasReales = "2";
 
-    @Column(name = "Activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")
+    @Column(name = "ACTIVO", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")
     private Integer activo = 1;
 
-    @Column(name = "Estado", length = 100)
+    @Column(name = "ESTADO", length = 100)
     private String estado = "Activo";
 
-    @Column(name = "Categoria", length = 100)
+    @Column(name = "CATEGORIA", length = 100)
     private String categoria = "Tarea";
 
     @ManyToOne
-    @JoinColumn(name = "idDesarrollador", referencedColumnName = "idDesarrollador", nullable = true)
+    @JoinColumn(name = "IDDESARROLLADOR", referencedColumnName = "IDDESARROLLADOR")
     private Desarrollador desarrollador;
 
     @ManyToOne
-    @JoinColumn(name = "idProyecto", referencedColumnName = "idProyecto", nullable = true)
+    @JoinColumn(name = "IDPROYECTO", referencedColumnName = "IDPROYECTO")
     private Proyecto proyecto;
 
     @ManyToOne
-    @JoinColumn(name = "idSprint", referencedColumnName = "idSprint", nullable = true)
+    @JoinColumn(name = "IDSPRINT", referencedColumnName = "IDSPRINT")
     private Sprint sprint;
 
     // Constructores
-    public Tarea() {}
+    public Tarea() {
+        this.activo = 1;
+        this.estado = "Activo";
+        this.categoria = "Tarea";
+        this.horasEstimadas = 2;
+        this.horasReales = "2";
+        this.fechaEntrega = LocalDateTime.now();
+        this.desarrollador = new Desarrollador();
+        this.proyecto = new Proyecto();
+        this.sprint = new Sprint();
+        this.idTarea = 0;
+        this.descripcion = "Descripcion";
+    }
 
     public Tarea(Integer idTarea, String descripcion, LocalDateTime fechaEntrega, Integer horasEstimadas, String horasReales,
                  Integer activo, String estado, String categoria, Desarrollador desarrollador, Proyecto proyecto, Sprint sprint) {
@@ -153,5 +207,12 @@ public class Tarea {
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
     }
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "idTarea=" + idTarea +
+                ", descripcion='" + descripcion + '\'' +
+                "}\n";
+    }
 }
-*/

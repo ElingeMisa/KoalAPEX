@@ -1,6 +1,7 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
 import com.springboot.MyTodoList.model.Desarrollador;
+import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
 import com.springboot.MyTodoList.controller.DesarrolladorService;
 import com.springboot.MyTodoList.controller.UsuariosService;
@@ -19,8 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.springboot.MyTodoList.repository.UsuariosRepository;
-
-
+import com.springboot.MyTodoList.service.TareaService;
 
 /**
  * Handles the new hello command
@@ -37,10 +37,12 @@ public class NewHelloCommandHandler implements CommandHandler {
 
     private final UsuariosService usuariosService;
     private final DesarrolladorService desarrolladorService;
+    private final TareaService tareaService;
 
 
     @Autowired
-    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService) {
+    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService) {
+        this.tareaService = tareaService;
         this.usuariosService = usuariosService;
         this.desarrolladorService = desarrolladorService;
     }
@@ -63,6 +65,7 @@ public class NewHelloCommandHandler implements CommandHandler {
 
     @Override
     public void handle(Update update, AbsSender sender) throws TelegramApiException {
+        
         long chatId = update.getMessage().getChatId();
         
         SendMessage messageToTelegram = new SendMessage();
@@ -75,25 +78,41 @@ public class NewHelloCommandHandler implements CommandHandler {
 
         message = "Información adicional: \n";
 
+        trymessage(sender, message, messageToTelegram);
+
+        message = "";
+
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
                 
         for (Usuarios usuario : usuarios) {
             message += usuario.toString();
         }
 
-        messageToTelegram.setText(message);
-        
         trymessage(sender, message, messageToTelegram);
 
         message= "\nRol :\n";
+
+        trymessage(sender, message, messageToTelegram);
+
+        message = "";
 
         List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
         for (Desarrollador des : desarrollador) {
             message += des.toString();
         }
         
-        message+= "\nFin de la información adicional";
+        trymessage(sender, message, messageToTelegram);
 
+        message = "Tareas asignadas: \n";
+
+        trymessage(sender, message, messageToTelegram);
+
+        List<Tarea> tareas = tareaService.findByIdDesarrollador(desarrollador.get(0).getIdDesarrollador());
+        message = "";
+
+        for (Tarea tarea : tareas) {
+            message += tarea.toString();
+        }
         messageToTelegram.setText(message);
         trymessage(sender, message, messageToTelegram);
     }

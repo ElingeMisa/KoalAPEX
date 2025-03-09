@@ -1,35 +1,59 @@
-/* 
 package com.springboot.MyTodoList.model;
 
 import javax.persistence.*;
 import java.util.Date;
 
+/*
+ CREATE TABLE "TODOUSER"."PROYECTO" 
+   (	"IDPROYECTO" NUMBER, 
+	"NOMBRE" VARCHAR2(100 BYTE) COLLATE "USING_NLS_COMP", 
+	"FECHACREACION" DATE, 
+	"DESCRIPCION" CLOB COLLATE "USING_NLS_COMP", 
+	"ACTIVO" NUMBER(1,0) DEFAULT 1
+   )  DEFAULT COLLATION "USING_NLS_COMP" ;
+
+    ALTER TABLE "TODOUSER"."PROYECTO" MODIFY ("NOMBRE" NOT NULL ENABLE);
+
+    ALTER TABLE "TODOUSER"."PROYECTO" ADD CHECK (Activo IN (0,1)) ENABLE;
+
+    ALTER TABLE "TODOUSER"."PROYECTO" ADD PRIMARY KEY ("IDPROYECTO")
+    USING INDEX  ENABLE;
+ */
+
+ 
 @Entity
-@Table(name = "Proyecto")
+@Table(name = "Proyecto", schema = "TODOUSER")
 public class Proyecto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proyecto_seq")
     @SequenceGenerator(name = "proyecto_seq", sequenceName = "Proyecto_seq", allocationSize = 1)
-    @Column(name = "idProyecto", nullable = false)
+    @Column(name = "IDPROYECTO", nullable = false)
     private Integer idProyecto;
 
-    @Column(name = "Nombre", nullable = false, length = 100)
+    @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "FechaCreacion")
+    @Column(name = "FECHACREACION")
     @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 
     @Lob
-    @Column(name = "Descripcion")
+    @Column(name = "DESCRIPCION")
     private String descripcion;
 
     @Column(name = "Activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")
     private Integer activo = 1;
 
     // Constructores
-    public Proyecto() {}
+    public Proyecto(
+    ) {
+        this.idProyecto = 0;
+        this.nombre = "Proyecto";
+        this.fechaCreacion = new Date();
+        this.descripcion = "Descripcion";
+        this.activo = 1;
+    }
 
     public Proyecto(Integer idProyecto, String nombre, Date fechaCreacion, String descripcion, Integer activo) {
         this.idProyecto = idProyecto;
@@ -80,4 +104,3 @@ public class Proyecto {
         this.activo = activo;
     }
 }
-    */
