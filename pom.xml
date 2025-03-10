@@ -84,10 +84,10 @@
 				<configuration>
 					<nodeVersion>${node.version}</nodeVersion>
 					<npmVersion>${npm.version}</npmVersion>
-                    <yarnVersion>${yarn.version}</yarnVersion>
+                    
 					<workingDirectory>${frontend-src-dir}</workingDirectory>
 					<installDirectory>${project.build.directory}</installDirectory>
-                    <downloadRoot></downloadRoot>
+                    
 				</configuration>
 				<executions>
 					<execution>
