@@ -3,8 +3,6 @@ package com.springboot.MyTodoList.controller.Handlers;
 import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
-import com.springboot.MyTodoList.controller.DesarrolladorService;
-import com.springboot.MyTodoList.controller.UsuariosService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
@@ -20,7 +18,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.springboot.MyTodoList.repository.UsuariosRepository;
+import com.springboot.MyTodoList.service.DesarrolladorService;
 import com.springboot.MyTodoList.service.TareaService;
+import com.springboot.MyTodoList.service.UsuariosService;
 
 /**
  * Handles the new hello command

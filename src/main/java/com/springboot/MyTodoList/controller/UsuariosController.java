@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.springboot.MyTodoList.model.Usuarios;
+import com.springboot.MyTodoList.service.UsuariosService;
 
 public class UsuariosController {
     
