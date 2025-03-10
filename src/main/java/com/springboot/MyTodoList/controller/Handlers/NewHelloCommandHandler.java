@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
  */
 @Component  // <-- Agregar esta anotación para que Spring gestione esta clase
 public class NewHelloCommandHandler implements CommandHandler {
+    
     private static final Logger logger = LoggerFactory.getLogger(NewHelloCommandHandler.class);
 
     private final UsuariosService usuariosService;

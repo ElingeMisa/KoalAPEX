@@ -13,6 +13,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
 import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotMessages;
 
@@ -38,6 +39,9 @@ public class MyTodoListApplication implements CommandLineRunner {
 	@Autowired  // Agregar la inyección de NewHelloCommandHandler
 	private NewHelloCommandHandler newHelloCommandHandler;
 
+	@Autowired
+	private StartCommandHandler startCommandHandler;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyTodoListApplication.class, args);
 	}
@@ -46,7 +50,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService, newHelloCommandHandler));
+			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService, newHelloCommandHandler, startCommandHandler));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

@@ -56,20 +56,22 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     private final String botName;
 
     private final NewHelloCommandHandler newHelloCommandHandler;
+    private final StartCommandHandler startCommandHandler;
 
     @Autowired 
-    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, NewHelloCommandHandler newHelloCommandHandler) {
+    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, NewHelloCommandHandler newHelloCommandHandler, StartCommandHandler startCommandHandler) {
         super(botToken);
         logger.info("Bot Token: " + botToken);
         logger.info("Bot name: " + botName);
         this.botName = botName;
         this.newHelloCommandHandler = newHelloCommandHandler;  // <-- Guardamos la instancia inyectada
+        this.startCommandHandler = startCommandHandler;
 
         // Initialize handlers
         newToDoItemHandler = new NewToDoItemHandler(toDoItemService);
         
         // Flujos de comandos
-        commandHandlers.add(new StartCommandHandler());
+        commandHandlers.add(startCommandHandler);
         commandHandlers.add(new ListItemsCommandHandler(toDoItemService));
         commandHandlers.add(new AddItemCommandHandler(toDoItemService));
         commandHandlers.add(new ItemActionHandler(toDoItemService));
