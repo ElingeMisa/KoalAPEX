@@ -1,6 +1,6 @@
 package com.springboot.MyTodoList.service;
-/*
-package com.springboot.MyTodoList.service;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +53,9 @@ public class EquipoProyectoService {
             return null;
         }
     }
+
+    public EquipoProyecto findById(int id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    }
 }
-*/

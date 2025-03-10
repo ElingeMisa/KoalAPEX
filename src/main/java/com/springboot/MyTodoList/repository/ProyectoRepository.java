@@ -1,4 +1,4 @@
-/*/
+
 package com.springboot.MyTodoList.repository;
 
 import javax.transaction.Transactional;
@@ -15,4 +15,3 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Integer> {
     
 }
 
-*/

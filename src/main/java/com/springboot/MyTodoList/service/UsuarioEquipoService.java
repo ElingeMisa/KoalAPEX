@@ -1,6 +1,6 @@
 package com.springboot.MyTodoList.service;
-/*
-package com.springboot.MyTodoList.service;
+
+
 
 import java.util.List;
 
@@ -34,4 +34,3 @@ public enum UsuarioEquipoService {
         throw new UnsupportedOperationException("Unimplemented method 'deleteUsuarioEquipo'");
     }
 }
-*/
