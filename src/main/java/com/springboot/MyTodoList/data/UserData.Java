@@ -83,5 +83,9 @@ public class UserData {
     public Tarea getTarea(int index) {
         return tareas.get(index);
     }
+
+    public void setTareas(List<Tarea> tareas) {
+        this.tareas = tareas;
+    }
     
 }

@@ -129,6 +129,12 @@ public class NewHelloCommandHandler implements CommandHandler {
         List<Tarea> tareas = tareaService.findByIdDesarrollador(desarrollador.get(0).getIdDesarrollador());
         message = "";
 
+        if(!tareas.isEmpty()){
+            userData.setTareas(tareas);
+        }else{
+            message = "No se encontraron tareas asignadas \n";
+        }
+        
         for (Tarea tarea : tareas) {
             message += tarea.toString();
         }
