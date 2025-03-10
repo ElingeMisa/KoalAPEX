@@ -1,0 +1,25 @@
+.kpi_board-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 32px;
+  display: flex;
+}
+
+.kpi_board__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.kpi_board__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-content: flex-start;
+}
+
+.kpi_board__footer {
+  margin-top: 16px;
+}

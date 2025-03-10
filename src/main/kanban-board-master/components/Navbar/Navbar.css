@@ -1,0 +1,126 @@
+:root {
+  --toggle-width: 3vw;
+  --toggle-height: 1.5vh;
+  --ball-size: 1.5vw;
+  --ball-translate: 2vw;
+}
+
+.navbar {
+  width: 14vw; /* Adjust the width as needed */
+  height: 100%; /* Full height */
+  border-right: 1px solid #ccc; /* Border on the right */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center;
+  justify-content: flex-start; /* Align items to the top */
+  padding-top: 1rem; /* Add some padding at the top */
+  color: var(--text-color);
+  position: fixed; /* Fix the navbar to the left side */
+  left: 0;
+  top: 0;
+  background-color: var(--background-color); /* Adjust background color as needed */
+  z-index: 1000; /* Ensure the navbar stays on top */
+  transition: all 350ms;
+}
+
+.navbar-header {
+  margin-bottom: 8vh; /* Add some space below the heading */
+  justify-items: end;
+}
+
+.navbar-header h3 {
+  font-size: 2vw;
+}
+
+.navbar-header h6 {
+  font-size: 1.3vw;
+}
+
+.navbar-header img {
+  width: 3vw;
+  height: 3vh;
+  object-fit: contain;
+}
+
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.label {
+  width: 36px;
+  height: 11px !important;
+  background-color: #111;
+  display: flex;
+  border-radius: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  position: relative;
+  transform: scale(1.5);
+}
+
+.ball {
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+
+/*  target the element after the label */
+.checkbox:checked + .label .ball {
+  transform: translateX(24px);
+}
+
+.fa-moon {
+  color: pink;
+}
+
+.fa-sun {
+  color: yellow;
+}
+
+.theme-switch-wrapper {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  margin-bottom: 2rem;
+  height: 90%;
+  width: 100%;
+}
+
+.navbar-item {
+  display: flex;
+  align-items: center;
+  padding: 1vh 1vw; /* Use viewport units for padding */
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 2vw; /* Use viewport units for font size */
+  margin-bottom: 20px;
+}
+
+.navbar-item i {
+  margin-right: 1vw; /* Use viewport units for margin */
+}
+
+.navbar-item span {
+  font-size: 1.2vw; /* Use viewport units for font size */
+}
+
+.navbar-item.selected {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] .navbar-item {
+  color: #fff;
+}
+
+[data-theme="light"] .navbar-item {
+  color: #000;
+}

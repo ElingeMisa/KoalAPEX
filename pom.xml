@@ -16,9 +16,10 @@
 	<properties>
 		<java.version>11</java.version>
 		<version.lib.ojdbc>21.1.0.0</version.lib.ojdbc>
-		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
-		<node.version>v16.13.2</node.version>
+		<frontend-src-dir>${project.basedir}/src/main/kanban-board-master</frontend-src-dir>
+		<node.version>v18.12.1</node.version>
 		<npm.version>8.1.2</npm.version>
+        <yarn.version>v1.22.22</yarn.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -83,13 +84,14 @@
 				<configuration>
 					<nodeVersion>${node.version}</nodeVersion>
 					<npmVersion>${npm.version}</npmVersion>
+                    <yarnVersion>${yarn.version}</yarnVersion>
 					<workingDirectory>${frontend-src-dir}</workingDirectory>
 					<installDirectory>${project.build.directory}</installDirectory>
-					<downloadRoot></downloadRoot>
+                    <downloadRoot></downloadRoot>
 				</configuration>
 				<executions>
 					<execution>
-						<id>install-frontend-tools</id>
+						<id>install-framework</id>
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
@@ -126,7 +128,7 @@
 							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${frontend-src-dir}/build</directory>
+									<directory>${frontend-src-dir}/dist</directory>
 									<filtering>false</filtering>
 								</resource>
 							</resources>

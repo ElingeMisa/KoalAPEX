@@ -1,0 +1,137 @@
+/* Define CSS variables for dark and light themes */
+:root {
+    --progress-color: #4CAF50;
+    --error-message-color: #F44336;
+
+    --background-color-dark: #1E1E1E;
+    --text-color-dark: #E0E0E0;
+    --container-background-color-dark: #2E2E2E;
+    --table-head-background-color-dark: #3E3E3E;
+    --table-head-border-color-dark: #767676;
+    --table-cell-border-color-dark: #444;
+    --table-row-hover-color-dark: #333;
+    --done-button-background-color-dark: #4CAF50;
+    --delete-button-background-color-dark: #F44336;
+
+    --background-color-light: #FFFFFF;
+    --text-color-light: #000000;
+    --container-background-color-light: #F5F5F5;
+    --table-head-background-color-light: #E0E0E0;
+    --table-head-border-color-light: #adadad;
+    --table-cell-border-color-light: #CCC;
+    --table-row-hover-color-light: #EEE;
+    --done-button-background-color-light: #4CAF50;
+    --delete-button-background-color-light: #F44336;
+}
+
+/* Apply global styles */
+.donelist {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.TableCell {
+    width: calc(100% / 8); /* number of columns */
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TableCell.action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DoneButton, .DeleteButton {
+    color: #FFF;
+}
+
+.DoneButton:hover, .DeleteButton:hover {
+    opacity: 0.8;
+}
+
+.CircularProgress {
+    color: var(--progress-color);
+}
+
+.ErrorMessage {
+    color: var(--error-message-color);
+}
+
+/* Apply dark theme styles */
+[data-theme="dark"] .TableContainer {
+    background: var(--container-background-color-dark);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+[data-theme="dark"] .donelist {
+    color: var(--text-color-dark);
+}
+
+[data-theme="dark"] .Table {
+    background: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+[data-theme="dark"] .TableHead {
+    background: var(--table-head-background-color-dark);
+    border-bottom: 3px solid var(--table-head-border-color-dark);
+}
+
+[data-theme="dark"] .TableCell {
+    border-bottom: 1px solid var(--table-cell-border-color-dark);
+    color: var(--text-color-dark);
+}
+
+[data-theme="dark"] .TableRow:hover {
+    background: var(--table-row-hover-color-dark);
+}
+
+[data-theme="dark"] .DoneButton {
+    background-color: var(--done-button-background-color-dark);
+}
+[data-theme="dark"] .DeleteButton {
+    background-color: var(--delete-button-background-color-dark);
+}
+
+
+/* Apply light theme styles */
+[data-theme="light"] .TableContainer {
+    background: var(--container-background-color-light);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+[data-theme="light"] .donelist {
+    color: var(--text-color-light);
+}
+
+[data-theme="light"] .Table {
+    background: var(--background-color-light);
+    color: var(--text-color-light);
+}
+
+[data-theme="light"] .TableHead {
+    background: var(--table-head-background-color-light);
+    border-bottom: 3px solid var(--table-head-border-color-light);
+}
+
+[data-theme="light"] .TableCell {
+    border-bottom: 1px solid var(--table-cell-border-color-light);
+    color: var(--text-color-light);
+}
+
+[data-theme="light"] .TableRow:hover {
+    background: var(--table-row-hover-color-light);
+}
+
+[data-theme="light"] .DoneButton {
+    background-color: var(--done-button-background-color-light);
+}
+[data-theme="light"] .DeleteButton {
+    background-color: var(--delete-button-background-color-light);
+}
