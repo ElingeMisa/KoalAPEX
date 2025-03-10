@@ -81,7 +81,7 @@ public class StartCommandHandler implements CommandHandler {
         return keyboard;
     }
 
-    private void FillUserDatasEQUENCE(){
+    private void FillUserDataSEQUENCE(){
 
     }
 
@@ -105,6 +105,8 @@ public class StartCommandHandler implements CommandHandler {
         messageToTelegram.setReplyMarkup(keyboardMarkup);
 
         trymessage(sender, BotMessages.HELLO_MYTODO_BOT.getMessage(), messageToTelegram);
+
+        FillUserDataSEQUENCE();
 
     }
 }

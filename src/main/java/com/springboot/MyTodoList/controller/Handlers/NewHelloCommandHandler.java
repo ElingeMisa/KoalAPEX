@@ -1,5 +1,6 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
+import com.springboot.MyTodoList.data.UserData;
 import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
@@ -39,10 +40,12 @@ public class NewHelloCommandHandler implements CommandHandler {
     private final UsuariosService usuariosService;
     private final DesarrolladorService desarrolladorService;
     private final TareaService tareaService;
+    private final UserData userData;
 
 
     @Autowired
-    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService) {
+    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData) {
+        this.userData = userData;
         this.tareaService = tareaService;
         this.usuariosService = usuariosService;
         this.desarrolladorService = desarrolladorService;
@@ -77,6 +80,7 @@ public class NewHelloCommandHandler implements CommandHandler {
 
         trymessage(sender, message, messageToTelegram);
 
+        // Busqueda de usuario con el token del canal
         message = "Información adicional: \n";
 
         trymessage(sender, message, messageToTelegram);
@@ -84,6 +88,11 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
+        if(!usuarios.isEmpty()){
+            userData.setUsuario(usuarios.get(0));
+        }else{
+            message = "No se encontraron datos de usuario \n";
+        }
                 
         for (Usuarios usuario : usuarios) {
             message += usuario.toString();
@@ -98,10 +107,19 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
+        if(!desarrollador.isEmpty()){
+            userData.setDesarrollador(desarrollador.get(0));
+        }else{
+            message = "No se encontraron datos de desarrollador \n";
+        }
         for (Desarrollador des : desarrollador) {
             message += des.toString();
         }
         
+        trymessage(sender, message, messageToTelegram);
+
+        message = "Manager : ";
+
         trymessage(sender, message, messageToTelegram);
 
         message = "Tareas asignadas: \n";

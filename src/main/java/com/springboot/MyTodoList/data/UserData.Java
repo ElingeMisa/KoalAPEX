@@ -1,12 +1,23 @@
 package com.springboot.MyTodoList.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.springboot.MyTodoList.model.Desarrollador;
+import com.springboot.MyTodoList.model.Manager;
+import com.springboot.MyTodoList.model.Tarea;
+import com.springboot.MyTodoList.model.Usuarios;
+
+@Component
 public class UserData {
 
     public Usuarios usuario;
     public String rol;
     public Desarrollador desarrollador;
     public Manager manager;
-
+    
     public List<Tarea> tareas;
 
     public UserData() {
@@ -14,6 +25,7 @@ public class UserData {
         this.rol = "usuario";
         this.desarrollador = new Desarrollador();
         this.manager = new Manager();
+        this.tareas = new ArrayList<>();
     }
 
     public UserData(Usuarios usuario, String rol, Desarrollador desarrollador, Manager manager) {
