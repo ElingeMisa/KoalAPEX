@@ -1,4 +1,4 @@
-/*
+/* 
 package com.springboot.MyTodoList.repository;
 
 import javax.transaction.Transactional;
@@ -14,5 +14,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
     
 }
-
-*/
+/* */
