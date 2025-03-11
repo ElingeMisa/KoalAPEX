@@ -2,6 +2,8 @@ package com.springboot.MyTodoList.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  CREATE TABLE "TODOUSER"."EQUIPO" 
@@ -51,6 +53,10 @@ public class Equipo {
     @Column(name = "ACTIVO", nullable = false)
     private Integer activo = 1;
 
+    // Relación bidireccional con UsuarioEquipo
+    @OneToMany(mappedBy = "equipo", fetch = FetchType.LAZY)
+    private Set<UsuarioEquipo> usuarioEquipos = new HashSet<>();
+
     // Constructores
     public Equipo() {
     }
@@ -92,5 +98,13 @@ public class Equipo {
 
     public void setActivo(Integer activo) {
         this.activo = activo;
+    }
+
+    public Set<UsuarioEquipo> getUsuarioEquipos() {
+        return usuarioEquipos;
+    }
+
+    public void setUsuarioEquipos(Set<UsuarioEquipo> usuarioEquipos) {
+        this.usuarioEquipos = usuarioEquipos;
     }
 }

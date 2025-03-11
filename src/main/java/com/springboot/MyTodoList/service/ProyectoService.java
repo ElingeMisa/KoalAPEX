@@ -44,5 +44,11 @@ public class ProyectoService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteProyecto'");
     }
+
+    public List<Proyecto> findByidEquipo(Long id) {
+        List<Proyecto> proyectos = proyectoRepository.findByEquipoId(id);
+        return proyectos;
+        
+    }
 }
     

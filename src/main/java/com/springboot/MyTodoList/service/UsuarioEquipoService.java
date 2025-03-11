@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.UsuarioEquipo;
 import com.springboot.MyTodoList.repository.UsuarioEquipoRepository;
 
@@ -41,4 +42,5 @@ public class UsuarioEquipoService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteUsuarioEquipo'");
     }
+
 }

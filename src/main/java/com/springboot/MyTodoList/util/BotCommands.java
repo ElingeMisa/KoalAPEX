@@ -6,7 +6,8 @@ public enum BotCommands {
 	HIDE_COMMAND("/hide"), 
 	TODO_LIST("/todolist"),
 	ADD_ITEM("/additem"),
-	NEW_HELLO("/newhello");
+	NEW_HELLO("/newhello"),
+	ADD_TAREA("/addtarea");
 
 	private String command;
 

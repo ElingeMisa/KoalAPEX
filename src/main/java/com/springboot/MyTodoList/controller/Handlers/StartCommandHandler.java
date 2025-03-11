@@ -3,12 +3,18 @@ package com.springboot.MyTodoList.controller.Handlers;
 import com.springboot.MyTodoList.data.UserData;
 
 import com.springboot.MyTodoList.model.Desarrollador;
+import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.Usuarios;
 import com.springboot.MyTodoList.model.Manager;
+import com.springboot.MyTodoList.model.Proyecto;
 import com.springboot.MyTodoList.model.Tarea;
+import com.springboot.MyTodoList.model.UsuarioEquipo;
 import com.springboot.MyTodoList.service.DesarrolladorService;
+import com.springboot.MyTodoList.service.EquipoService;
 import com.springboot.MyTodoList.service.ManagerService;
+import com.springboot.MyTodoList.service.ProyectoService;
 import com.springboot.MyTodoList.service.TareaService;
+import com.springboot.MyTodoList.service.UsuarioEquipoService;
 import com.springboot.MyTodoList.service.UsuariosService;
 
 import com.springboot.MyTodoList.util.BotCommands;
@@ -45,11 +51,17 @@ public class StartCommandHandler implements CommandHandler {
     private final DesarrolladorService desarrolladorService;
     private final TareaService tareaService;
     private final ManagerService managerService;
+    private final UsuarioEquipoService  usuarioEquipoService;
+    private final ProyectoService proyectoService;
+    private final EquipoService equipoService;
 
     private final UserData userData;
 
     @Autowired
-    public StartCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData, ManagerService managerService) {  
+    public StartCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData, ManagerService managerService, UsuarioEquipoService usuarioEquipoService, ProyectoService proyectoService, EquipoService equiposService) {
+        this.equipoService = equiposService; 
+        this.proyectoService = proyectoService;
+        this.usuarioEquipoService = usuarioEquipoService;  
         this.managerService = managerService;
         this.userData = userData;
         this.tareaService = tareaService;
@@ -124,6 +136,11 @@ public class StartCommandHandler implements CommandHandler {
         if(!tareas.isEmpty()){
             userData.setTareas(tareas);
         }
+
+        List<Equipo> equipos = equipoService.findByIdUsuario(usuarios.get(0).getId());
+        if (!equipos.isEmpty()) {
+            userData.setEquipos(equipos);
+        }
         
     }
 
@@ -188,7 +205,41 @@ public class StartCommandHandler implements CommandHandler {
         }
 
         trymessage(sender, message, messageToTelegram);
-        
+
+        // Busca los usuarios del equipo
+        trymessage(sender, "Equipos registrados de este usuario: \n", messageToTelegram);
+        message = "";
+
+        List<Equipo> equipos = equipoService.findByIdUsuario(usuarios.get(0).getId());
+
+        if (!equipos.isEmpty()) {
+            for (Equipo equipo : equipos) {message += equipo.toString();}
+            userData.setEquipos(equipos);
+        } else {
+            message += "No se encontraron equipos registrados \n";
+            
+        }
+
+        // Busca los proyectos de un usuario
+        trymessage(sender, "Proyectos registrados de este usuario: \n", messageToTelegram);
+        message = "";
+
+        List<Proyecto> proyectos = new ArrayList<>();
+        for(Equipo equipo : equipos){
+            List<Proyecto> proyectosTemp = proyectoService.findByidEquipo(equipo.getIdEquipo());
+            if(!proyectosTemp.isEmpty()){
+                for(Proyecto proyecto : proyectosTemp){
+                    proyectos.add(proyecto);
+                }
+            }
+        }
+
+        if(!proyectos.isEmpty()){
+            for (Proyecto proyecto : proyectos) {message += proyecto.toString();}
+            userData.setProyectos(proyectos);
+        } else {
+            message += "No se encontraron proyectos registrados \n";
+        }
     }
     @Override
     public void handle(Update update, AbsSender sender) throws TelegramApiException {
@@ -216,6 +267,6 @@ public class StartCommandHandler implements CommandHandler {
          * Secuencia para llenar la información del usuario
          */
 
-        FillUserDataSequenceSH(chatidString, sender, messageToTelegram);
+        FillUserDataSequence(chatidString, sender, messageToTelegram);
     }
 }

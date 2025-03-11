@@ -76,7 +76,7 @@ SELECT * from TODOUSER.TAREA t WHERE t.IDDESARROLLADOR = (SELECT IDDESARROLLADOR
     @Query(value = "SELECT * FROM TODOUSER.TAREA t WHERE t.IDDESARROLLADOR = :idDesarrollador", nativeQuery = true)
     List<Tarea> findByIdDesarrollador(@Param("idDesarrollador") Integer idDesarrollador);
 
-
+    // Busca todos los proyectos con un nombre especifico.
     /* 
     @Query(value = "SELECT t.* FROM TODOUSER.TAREA t " +
        "WHERE t.IDDESARROLLADOR = " +

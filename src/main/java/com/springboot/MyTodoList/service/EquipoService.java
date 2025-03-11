@@ -42,4 +42,10 @@ public class EquipoService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteEquipo'");
     }
+
+    public List<Equipo> findByIdUsuario(Long id) {
+        List<Equipo> equipos = equipoRepository.findByUsuarioId(id);
+        return equipos;
+        
+    }
 }

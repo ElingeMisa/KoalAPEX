@@ -78,7 +78,7 @@ public class Tarea {
     private String categoria = "Tarea";
 
     @ManyToOne
-    @JoinColumn(name = "IDDESARROLLADOR", referencedColumnName = "IDDESARROLLADOR")
+    @JoinColumn(name = "IDDESARROLLADOR", referencedColumnName = "IDDESARROLLADOR", nullable = true,foreignKey = @ForeignKey(name = "FK_TAREA_DESARROLLADOR"))
     private Desarrollador desarrollador;
 
     @ManyToOne

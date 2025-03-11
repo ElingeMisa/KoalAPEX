@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.OffsetDateTime;
 
-/**
+/*
  * This is a special handler that receives text input after the AddItemCommandHandler
  * and creates a new to-do item. It needs special treatment as part of a multi-step flow.
  */

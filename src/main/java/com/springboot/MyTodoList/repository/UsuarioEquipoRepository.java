@@ -10,12 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.UsuarioEquipo;
 
 @Repository
 @Transactional
 @EnableTransactionManagement
 public interface UsuarioEquipoRepository extends JpaRepository<UsuarioEquipo, Long> {
-    
     
 }

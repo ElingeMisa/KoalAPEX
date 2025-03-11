@@ -14,7 +14,12 @@ public enum BotMessages {
 	NO_ITEMS("¡No hay elementos para mostrar! Selecciona /start para ir a la pantalla principal."),
 	NO_ITEMS_TO_DELETE("¡No hay elementos para eliminar! Selecciona /start para ir a la pantalla principal."),
 	NEW_HELLO("¡Hola, soy un mensaje nuevo creado por el desarrollador!"),
-	INVALID_COMMAND("¡Por favor, ingrese un comando válido!");
+	INVALID_COMMAND("¡Por favor, ingrese un comando válido!"),
+	TYPE_NEW_TAREA("Escribe una nueva tarea a continuación y presiona el botón de enviar (flecha azul) en el lado derecho."),
+	NEW_TAREA_ADDED("¡Nueva tarea añadida! Selecciona /todolist para volver a la lista de tareas, o /start para ir a la pantalla principal."),
+	NO_TAREAS("¡No hay tareas para mostrar! Selecciona /start para ir a la pantalla principal."),
+	NO_TAREAS_TO_DELETE("¡No hay tareas para eliminar! Selecciona /start para ir a la pantalla principal."),
+	NO_TAREAS_TO_DONE("¡No hay tareas para marcar como completadas! Selecciona /start para ir a la pantalla principal."),;
 
 	private String message;
 
