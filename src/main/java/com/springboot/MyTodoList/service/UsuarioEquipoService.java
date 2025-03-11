@@ -1,14 +1,22 @@
 package com.springboot.MyTodoList.service;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import com.springboot.MyTodoList.model.UsuarioEquipo;
+import com.springboot.MyTodoList.repository.UsuarioEquipoRepository;
 
-public enum UsuarioEquipoService {
-    ;
+@Service
+public class UsuarioEquipoService {
+    
+    private final UsuarioEquipoRepository usuarioEquipoRepository;
 
+    @Autowired
+    public UsuarioEquipoService(UsuarioEquipoRepository usuarioEquipoRepository) {
+        this.usuarioEquipoRepository = usuarioEquipoRepository;
+    }
+    
     public List<UsuarioEquipo> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");

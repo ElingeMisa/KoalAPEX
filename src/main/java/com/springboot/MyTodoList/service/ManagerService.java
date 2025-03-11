@@ -4,11 +4,22 @@ package com.springboot.MyTodoList.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.springboot.MyTodoList.model.Manager;
+import com.springboot.MyTodoList.repository.ManagerRepository;
 
-public enum ManagerService {
-    ;
+@Service
+public class ManagerService {
+    
+    private final ManagerRepository managerRepository;
 
+    @Autowired
+    public ManagerService(ManagerRepository managerRepository) {
+        this.managerRepository = managerRepository;
+    }
+    
     public List<Manager> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");

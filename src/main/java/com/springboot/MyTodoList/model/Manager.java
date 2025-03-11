@@ -48,7 +48,11 @@ public class Manager {
     private Integer activo = 1;
 
     // Constructores
-    public Manager() {}
+    public Manager() {
+        this.activo = 1;
+        this.usuario = new Usuarios();
+        this.idManage = 0;
+    }
 
     public Manager(Integer idManage, Usuarios usuario, Integer activo) {
         this.idManage = idManage;

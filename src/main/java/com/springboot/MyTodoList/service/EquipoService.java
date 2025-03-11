@@ -2,10 +2,21 @@ package com.springboot.MyTodoList.service;
 
 import java.util.List;
 
-import com.springboot.MyTodoList.model.Equipo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.springboot.MyTodoList.model.Equipo;
+import com.springboot.MyTodoList.repository.EquipoRepository;
+
+@Service
 public class EquipoService {
     
+    private final EquipoRepository equipoRepository;
+
+    @Autowired
+    public EquipoService(EquipoRepository equipoRepository) {
+        this.equipoRepository = equipoRepository;
+    }
 
     public List<Equipo> findAll() {
         // TODO Auto-generated method stub

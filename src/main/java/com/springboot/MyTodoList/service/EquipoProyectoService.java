@@ -1,7 +1,6 @@
 package com.springboot.MyTodoList.service;
 
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +14,7 @@ import com.springboot.MyTodoList.repository.EquipoProyectoRepository;
 
 @Service
 public class EquipoProyectoService {
+    
     @Autowired
     private EquipoProyectoRepository equipoProyectoRepository;
 

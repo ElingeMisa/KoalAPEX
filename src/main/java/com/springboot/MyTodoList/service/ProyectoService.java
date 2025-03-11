@@ -4,10 +4,21 @@ package com.springboot.MyTodoList.service;
 
 import java.util.List;
 
-import com.springboot.MyTodoList.model.Proyecto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public enum ProyectoService {
-    ;
+import com.springboot.MyTodoList.model.Proyecto;
+import com.springboot.MyTodoList.repository.ProyectoRepository;
+
+@Service
+public class ProyectoService {
+    
+    private final ProyectoRepository proyectoRepository;
+    
+    @Autowired
+    public ProyectoService(ProyectoRepository proyectoRepository) {
+        this.proyectoRepository = proyectoRepository;
+    }
 
     public List<Proyecto> findAll() {
         // TODO Auto-generated method stub

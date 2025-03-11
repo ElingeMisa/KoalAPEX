@@ -18,6 +18,7 @@ import com.springboot.MyTodoList.controller.ToDoItemBotController;
 import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
 import com.springboot.MyTodoList.data.UserData;
+import com.springboot.MyTodoList.service.SprintService;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotMessages;
 
@@ -36,6 +37,9 @@ public class MyTodoListApplication implements CommandLineRunner {
 
 	@Autowired
 	private ToDoItemService toDoItemService;
+
+	@Autowired
+	private SprintService sprintService;
 
 	@Value("${telegram.bot.token}")
 	private String telegramBotToken;

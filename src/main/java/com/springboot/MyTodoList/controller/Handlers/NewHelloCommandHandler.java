@@ -88,14 +88,12 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
+        for (Usuarios usuario : usuarios) {message += usuario.toString();}
+        
         if(!usuarios.isEmpty()){
             userData.setUsuario(usuarios.get(0));
         }else{
             message = "No se encontraron datos de usuario \n";
-        }
-                
-        for (Usuarios usuario : usuarios) {
-            message += usuario.toString();
         }
 
         trymessage(sender, message, messageToTelegram);
@@ -107,13 +105,12 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
+        for (Desarrollador des : desarrollador) {message += des.toString();}
+        
         if(!desarrollador.isEmpty()){
             userData.setDesarrollador(desarrollador.get(0));
         }else{
             message = "No se encontraron datos de desarrollador \n";
-        }
-        for (Desarrollador des : desarrollador) {
-            message += des.toString();
         }
         
         trymessage(sender, message, messageToTelegram);
@@ -128,6 +125,8 @@ public class NewHelloCommandHandler implements CommandHandler {
 
         List<Tarea> tareas = tareaService.findByIdDesarrollador(desarrollador.get(0).getIdDesarrollador());
         message = "";
+        
+        for (Tarea tarea : tareas) {message += tarea.toString();}
 
         if(!tareas.isEmpty()){
             userData.setTareas(tareas);
@@ -135,9 +134,6 @@ public class NewHelloCommandHandler implements CommandHandler {
             message = "No se encontraron tareas asignadas \n";
         }
         
-        for (Tarea tarea : tareas) {
-            message += tarea.toString();
-        }
         messageToTelegram.setText(message);
         trymessage(sender, message, messageToTelegram);
     }

@@ -1,5 +1,6 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
+import com.springboot.MyTodoList.data.UserData;
 import com.springboot.MyTodoList.model.Usuarios;
 import com.springboot.MyTodoList.service.DesarrolladorService;
 import com.springboot.MyTodoList.service.TareaService;
@@ -26,7 +27,7 @@ import java.util.List;
  * Handles the start command and main screen display
  */
 
- @Component
+@Component
 public class StartCommandHandler implements CommandHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(StartCommandHandler.class);
@@ -35,8 +36,11 @@ public class StartCommandHandler implements CommandHandler {
     private final DesarrolladorService desarrolladorService;
     private final TareaService tareaService;
 
+    private final UserData userData;
+
     @Autowired
-    public StartCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService) {
+    public StartCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData) {
+        this.userData = userData;
         this.tareaService = tareaService;
         this.usuariosService = usuariosService;
         this.desarrolladorService = desarrolladorService;
@@ -81,16 +85,13 @@ public class StartCommandHandler implements CommandHandler {
         return keyboard;
     }
 
-    private void FillUserDataSEQUENCE(){
-
-    }
-
     @Override
     public void handle(Update update, AbsSender sender) throws TelegramApiException {
         
         long chatId = update.getMessage().getChatId();
         
         String chatidString = String.valueOf(chatId);
+        String message = "";
         
         SendMessage messageToTelegram = new SendMessage();
         messageToTelegram.setChatId(chatId);
@@ -106,7 +107,12 @@ public class StartCommandHandler implements CommandHandler {
 
         trymessage(sender, BotMessages.HELLO_MYTODO_BOT.getMessage(), messageToTelegram);
 
-        FillUserDataSEQUENCE();
+        /*
+         * Mostramos la información del usuario con lo que se tiene en UserData
+         */
 
+        message = "Información adicional: \n";
+        message+= userData.toString();
+        trymessage(sender, message, messageToTelegram);
     }
 }
