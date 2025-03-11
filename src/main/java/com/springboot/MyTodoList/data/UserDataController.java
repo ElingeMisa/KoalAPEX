@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/userdata")
-@CrossOrigin(origins = "*")
 public class UserDataController {
 
+    @Autowired
     private final UserData userData;
 
     @Autowired
@@ -21,13 +20,18 @@ public class UserDataController {
         this.userData = userData;
     }
 
-    @GetMapping("/start")
+    @GetMapping(value = "/userdata")
+    public UserData getUserData() {
+        return userData;
+    }
+
+    @GetMapping("userdata/start")
     public String userData(Model model) {
         model.addAttribute("userData", userData);
         return "userData";
     }
 
-    @GetMapping("/perfil")
+    @GetMapping("userdata/perfil")
     public String mostrarPerfil(Model model) {
         // Usar los datos almacenados en userData
         model.addAttribute("usuario", userData.getUsuario());

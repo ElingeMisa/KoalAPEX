@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.springboot.MyTodoList.model.Equipo;
 
-public enum EquipoService {
-    ;
+public class EquipoService {
+    
 
     public List<Equipo> findAll() {
         // TODO Auto-generated method stub
