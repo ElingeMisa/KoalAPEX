@@ -1,3 +1,4 @@
+mvn verify
 docker stop agileOrganizerContainer
 docker rm -f agileOrganizerContainer
 docker rmi agileOrganizerContainer
