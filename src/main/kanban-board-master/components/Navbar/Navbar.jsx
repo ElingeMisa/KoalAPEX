@@ -21,12 +21,21 @@ export default function Navbar(props) {
 
   return (
     <div className="navbar">
-      <div className="navbar-header">
-        <h3>
-          <img src={logo} alt="logo"/>
-          MOCK-UP
-        </h3>
-        <h6>KoalAPEX</h6>
+      {/*Este link está para evitar un bug visual*/}
+        <div>
+          <Link to={"/"} key={0} onClick={() => handleItemClick("/")}></Link>
+        </div>
+      {/**/}
+      <div className="navbar-header-container">
+        <Link to={"/"} key={0} onClick={() => handleItemClick("/")}>
+          <div className="navbar-header">
+            <h3>
+              <img src={logo} alt="logo"/>
+              MOCK-UP
+            </h3>
+            <h6>KoalAPEX</h6>
+          </div>
+        </Link>
       </div>
       {navbarItems.map((item, index) => (
         item.path ? (

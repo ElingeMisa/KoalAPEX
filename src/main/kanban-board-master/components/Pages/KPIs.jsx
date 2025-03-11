@@ -1,18 +1,16 @@
 import { React, useEffect, useState } from "react";
-import API_LIST from '../API/API';
+import API from '../API/API';
 import KPI_Board from "../KPI/KPI_Board";
 import { DragDropContext } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 export default function KPIs() {
   const [isLoading, setLoading] = useState(false);
-  const [items, setItems] = useState([]);
+  const [TAREAS, setTAREAS] = useState([]);
   const [error, setError] = useState(null);
 
-  //const API_LIST = API_LIST.TODOLIST;
-
   // testing mode
-  const testing_mode = true;
+  const testing_mode = false;
   const test_items = [{
     title: "Solicitudes Emergentes",
     tags: [{ tagName: "+5.2%", color: "#C74634" }],
@@ -35,33 +33,9 @@ export default function KPIs() {
   }];
 
   // Fetch data from API
-  function reloadOneIteam(id) {
-    fetch(API_LIST + "/" + id)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Something went wrong ...');
-        }
-      })
-      .then(
-        (result) => {
-          const items2 = items.map(
-            x => (x.id === id ? {
-              ...x,
-              'description': result.description,
-              'done': result.done
-            } : x));
-          setItems(items2);
-        },
-        (error) => {
-          setError(error);
-        });
-  }
-
   useEffect(() => {
     setLoading(true);
-    fetch(API_LIST)
+    fetch(API.TAREAS)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -72,7 +46,7 @@ export default function KPIs() {
       .then(
         (result) => {
           setLoading(false);
-          setItems(result);
+          setTAREAS(result);
         },
         (error) => {
           setLoading(false);
@@ -114,7 +88,7 @@ export default function KPIs() {
     return tempData;
   };
 
-  const addCard = (title, bid, tags, info) => {
+  const addCard = (title, bid, tags, info = 0) => {
     const index = data.findIndex((item) => item.id === bid);
     const tempData = [...data];
     tempData[index].card.push({
@@ -171,6 +145,10 @@ export default function KPIs() {
     setData(tempBoards);
   };
 
+  // KPIs calculation
+  const tareas_completadas = TAREAS.filter((item) => item.estado == "Completado").length;
+  const tareas_activas = TAREAS.filter((item) => item.estado == "Activo").length;
+
   useEffect(() => {
     localStorage.setItem("kpi-cards", JSON.stringify(data));
   }, [data]);
@@ -178,22 +156,54 @@ export default function KPIs() {
   const [activeBoard, setActiveBoard] = useState(null);
 
   useEffect(() => {
-    data.length === 0
-    ?
+    if(data.length === 0) {
       addBoard("KPI Board") 
-    :
-      data[0].card.length === 0 
-      &&
-        testing_mode 
-        ?
+    }
+    else
+    {
+      if(data[0].card.length === 0) {
+        if(testing_mode)
+        {
           test_items.forEach((item) => {
             addCard(item.title, data[0].id, item.tags, item.data);
           })
-        :
-          items.forEach((item) => {
-            addCard(item.title, data[0].id, item.tags, item.data);
-          })
-  }, [data, addBoard, addCard, items, testing_mode]);
+        }
+        else
+        {
+          addCard(
+            "Tareas Completadas", 
+            data[0].id,
+            [{ tagName: "+0%", color: "#7F7F7F" }],
+          );
+          addCard(
+            "Tareas Activas", 
+            data[0].id,
+            [{ tagName: "+0%", color: "#7F7F7F" }],
+          );
+        }
+      }
+      else
+      {
+        if(!testing_mode)
+        {
+          data[0].card.forEach((item) => {
+            updateCard(data[0].id, item.id, {
+              id: item.id,
+              title: item.title,
+              tags: item.tags,
+              data:
+                item.title === "Tareas Completadas" ?
+                  tareas_completadas
+                : item.title === "Tareas Activas" ?
+                  tareas_activas
+                : 
+                  item.data
+            });
+          });
+        }
+      }
+    }
+  }, [data, addBoard, addCard, updateCard, test_items, testing_mode, tareas_completadas, tareas_activas]);
 
   return (
     <div>
@@ -212,6 +222,7 @@ export default function KPIs() {
               error={testing_mode ? null : error}
               isActive={activeBoard === item.id}
               setActiveBoard={setActiveBoard}
+              setName={setName}
             />
           ))
         }

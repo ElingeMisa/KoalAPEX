@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import KPI_Card from "./KPI_Card";
 import "./KPI_Board.css";
 import { Droppable } from "react-beautiful-dnd";
+import { CircularProgress } from "@mui/material";
 
 export default function KPI_Board(props) {
   return (
     <div>
       {props.error && <p className="ErrorMessage">Error: {props.error.message}</p>}
-      {props.isLoading && <p>Loading...</p>}
+      {props.isLoading && <CircularProgress className="CircularProgress" />}
       {!props.isLoading && (
         <div className="kpi_board-container">
           <Droppable droppableId={props.id.toString()} direction="horizontal">

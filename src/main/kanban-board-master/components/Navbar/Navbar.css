@@ -23,9 +23,23 @@
   transition: all 350ms;
 }
 
+.navbar-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
 .navbar-header {
-  margin-bottom: 8vh; /* Add some space below the heading */
   justify-items: end;
+  user-select: none; /* Make text and items non-selectable */
+  -webkit-user-drag: none; /* Prevent text and items from dragging */
+  transition: transform 0.3s ease; /* Add transition for smooth scaling */
+}
+
+.navbar-header:hover {
+  transform: scale(1.05); /* Scale up a little on hover */
 }
 
 .navbar-header h3 {
@@ -40,6 +54,8 @@
   width: 3vw;
   height: 3vh;
   object-fit: contain;
+  user-select: none; /* Make image non-selectable */
+  -webkit-user-drag: none; /* Prevent image dragging */
 }
 
 .checkbox {
@@ -96,11 +112,11 @@
 .navbar-item {
   display: flex;
   align-items: center;
-  padding: 1vh 1vw; /* Use viewport units for padding */
+  padding: 1rem;
   cursor: pointer;
   color: var(--text-color);
-  font-size: 2vw; /* Use viewport units for font size */
-  margin-bottom: 20px;
+  font-size: 2vw;
+  user-select: none;
 }
 
 .navbar-item i {
@@ -123,4 +139,13 @@
 
 [data-theme="light"] .navbar-item {
   color: #000;
+}
+
+/* Ensure Link component does not modify text inside it */
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin-bottom: 5vh; /* Add margin to create space between items */
 }
