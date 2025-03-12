@@ -9,6 +9,7 @@ import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.Manager;
 import com.springboot.MyTodoList.model.Proyecto;
+import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
 
@@ -23,6 +24,10 @@ public class UserData {
     public List<Tarea> tareas;
     public List<Equipo> equipos;
     public List<Proyecto> proyectos;
+
+    public List<Sprint> sprintsProyecto;
+    // Cada lista de sprints corresponde a un proyecto
+    public List<List<Sprint>> sprints;
 
     public UserData() {
         this.usuario = new Usuarios();
@@ -102,9 +107,17 @@ public class UserData {
     public void setProyectos(List<Proyecto> proyectos) {
         this.proyectos = proyectos;
     }
-    
+
     public List<Proyecto> getProyectos() {
         return proyectos;
+    }
+
+    public void setSprints(List<List<Sprint>> sprints) {
+        this.sprints = sprints;
+    }
+
+    public List<List<Sprint>> getSprints() {
+        return sprints;
     }
     
 }

@@ -7,12 +7,14 @@ import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.Usuarios;
 import com.springboot.MyTodoList.model.Manager;
 import com.springboot.MyTodoList.model.Proyecto;
+import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.Tarea;
-import com.springboot.MyTodoList.model.UsuarioEquipo;
+
 import com.springboot.MyTodoList.service.DesarrolladorService;
 import com.springboot.MyTodoList.service.EquipoService;
 import com.springboot.MyTodoList.service.ManagerService;
 import com.springboot.MyTodoList.service.ProyectoService;
+import com.springboot.MyTodoList.service.SprintService;
 import com.springboot.MyTodoList.service.TareaService;
 import com.springboot.MyTodoList.service.UsuarioEquipoService;
 import com.springboot.MyTodoList.service.UsuariosService;
@@ -54,11 +56,24 @@ public class StartCommandHandler implements CommandHandler {
     private final UsuarioEquipoService  usuarioEquipoService;
     private final ProyectoService proyectoService;
     private final EquipoService equipoService;
+    private final SprintService sprintService;
 
     private final UserData userData;
 
     @Autowired
-    public StartCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData, ManagerService managerService, UsuarioEquipoService usuarioEquipoService, ProyectoService proyectoService, EquipoService equiposService) {
+    public StartCommandHandler
+    (
+            DesarrolladorService desarrolladorService, 
+            UsuariosService usuariosService, 
+            TareaService tareaService, 
+            UserData userData, 
+            ManagerService managerService, 
+            UsuarioEquipoService usuarioEquipoService, 
+            ProyectoService proyectoService, 
+            EquipoService equiposService, 
+            SprintService sprintService
+    ) {
+        this.sprintService = sprintService;
         this.equipoService = equiposService; 
         this.proyectoService = proyectoService;
         this.usuarioEquipoService = usuarioEquipoService;  
@@ -117,33 +132,53 @@ public class StartCommandHandler implements CommandHandler {
     {
         // Busqueda de usuario con el token del canal
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
-        
         if (!usuarios.isEmpty()) {
             userData.setUsuario(usuarios.get(0));
         } 
+        // Busqueda de desarrollador con el id del usuario
         List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
-
         if(!desarrollador.isEmpty()){
             userData.setDesarrollador(desarrollador.get(0));
         }
-    
+        // Busca a un manager con el id del desarrollador
         List<Manager> managers = managerService.findByIdUsuario(usuarios.get(0).getId());
         if(!managers.isEmpty()){
             userData.setManager(managers.get(0));
         } 
-        
+        // Busca las tareas asignadas al desarrollador
         List<Tarea> tareas = tareaService.findByIdDesarrollador(desarrollador.get(0).getIdDesarrollador());   
         if(!tareas.isEmpty()){
             userData.setTareas(tareas);
         }
-
+        // Busca los equipos a los que pertenece un usuario
         List<Equipo> equipos = equipoService.findByIdUsuario(usuarios.get(0).getId());
         if (!equipos.isEmpty()) {
             userData.setEquipos(equipos);
         }
+        // Busca los proyectos de un usuario
+        List<Proyecto> proyectos = new ArrayList<>();
+        for(Equipo equipo : equipos){
+            List<Proyecto> proyectosTemp = proyectoService.findByidEquipo(equipo.getIdEquipo());
+            if(!proyectosTemp.isEmpty()){
+                for(Proyecto proyecto : proyectosTemp){
+                    proyectos.add(proyecto);
+                }
+            }
+        }
+        userData.setProyectos(proyectos);
+        // Llenamos los sprints de los proyectos
+        List<List<Sprint>> sprints = new ArrayList<>();
+        for(Proyecto proyecto:proyectos){
+            List<Sprint> sprintsProyecto = sprintService.findByidProyecto(proyecto.getIdProyecto());
+            if(!sprintsProyecto.isEmpty()){
+                sprints.add(sprintsProyecto);
+            }
+        }
+        userData.setSprints(sprints);
         
     }
 
+    @SuppressWarnings("unused")
     private void FillUserDataSequence
         (String chatidString, AbsSender sender, SendMessage messageToTelegram) 
     throws TelegramApiException 
@@ -206,7 +241,7 @@ public class StartCommandHandler implements CommandHandler {
 
         trymessage(sender, message, messageToTelegram);
 
-        // Busca los usuarios del equipo
+        // Busca los equipos a los que pertenece un usuario
         trymessage(sender, "Equipos registrados de este usuario: \n", messageToTelegram);
         message = "";
 
@@ -243,7 +278,26 @@ public class StartCommandHandler implements CommandHandler {
             message += "No se encontraron proyectos registrados \n";
         }
         trymessage(sender, message, messageToTelegram);
+
+        // Todos los sprint de un proyecto
+        trymessage(sender, "Sprints de los proyectos: \n", messageToTelegram);
+        message = "";
+        
+        List<List<Sprint>> sprints = new ArrayList<>();
+
+        for(Proyecto proyecto:proyectos){
+            List<Sprint> sprintsProyecto = sprintService.findByidProyecto(proyecto.getIdProyecto());
+            if(!sprintsProyecto.isEmpty()){
+                for(Sprint sprint : sprintsProyecto){
+                    message += sprint.toString();
+                }
+                sprints.add(sprintsProyecto);
+            }
+        }
+        userData.setSprints(sprints);
+        trymessage(sender, message, messageToTelegram);
     }
+
     @Override
     public void handle(Update update, AbsSender sender) throws TelegramApiException {
         
@@ -270,6 +324,22 @@ public class StartCommandHandler implements CommandHandler {
          * Secuencia para llenar la información del usuario
          */
 
-        FillUserDataSequence(chatidString, sender, messageToTelegram);
+        FillUserDataSequenceSH(chatidString, sender, messageToTelegram);
+
+        /* 
+        message = "Información de usuario: \n";
+
+        message+= "Hola " + userData.getUsuario().getNombre();
+        message+="\nTienes " + userData.getTareas().size() + " tareas asignadas \n";
+        message+="Tienes " + userData.getEquipos().size() + " equipos asignados \n";
+        message+="Tienes " + userData.getProyectos().size() + " proyectos asignados \n";
+        
+        //mostramos el numero de sprint por proyecto
+        for(int i = 0; i < userData.getProyectos().size(); i++){
+            message += "El proyecto " + userData.getProyectos().get(i).getNombre() + " tiene " + userData.getSprints().get(i).size() + " sprints \n";
+        }
+        trymessage(sender, message, messageToTelegram);
+        */
     }
+
 }

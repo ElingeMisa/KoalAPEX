@@ -29,7 +29,7 @@ public class Proyecto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proyecto_seq")
     @SequenceGenerator(name = "proyecto_seq", sequenceName = "Proyecto_seq", allocationSize = 1)
     @Column(name = "IDPROYECTO", nullable = false)
-    private Integer idProyecto;
+    private Long idProyecto;
 
     @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
@@ -48,14 +48,14 @@ public class Proyecto {
     // Constructores
     public Proyecto(
     ) {
-        this.idProyecto = 0;
+        this.idProyecto = (long) 0;
         this.nombre = "Proyecto";
         this.fechaCreacion = new Date();
         this.descripcion = "Descripcion";
         this.activo = 1;
     }
 
-    public Proyecto(Integer idProyecto, String nombre, Date fechaCreacion, String descripcion, Integer activo) {
+    public Proyecto(Long idProyecto, String nombre, Date fechaCreacion, String descripcion, Integer activo) {
         this.idProyecto = idProyecto;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
@@ -64,11 +64,11 @@ public class Proyecto {
     }
 
     // Getters y Setters
-    public Integer getIdProyecto() {
+    public Long getIdProyecto() {
         return idProyecto;
     }
 
-    public void setIdProyecto(Integer idProyecto) {
+    public void setIdProyecto(Long idProyecto) {
         this.idProyecto = idProyecto;
     }
 

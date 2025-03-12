@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.data.UserData;
+import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.Proyecto;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.service.ProyectoService;
@@ -102,6 +103,7 @@ import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.service.TareaService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,15 +156,29 @@ public class NewTareaCommandHandler {
     public boolean isEsperandoFechaEntrega() {
         return isWaitingForFechaEntrega;
     }
-    /* 
+    
+    private void trymessage(Update update, AbsSender sender, String message) 
+    throws TelegramApiException
+    {
+        long chatId = update.getMessage().getChatId();
+        SendMessage mensajeParaTelegram = new SendMessage();
+        mensajeParaTelegram.setChatId(chatId);
+        mensajeParaTelegram.setText(message);
+        try {
+            sender.execute(mensajeParaTelegram);
+        } catch (TelegramApiException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
     public void handleNuevaTarea(Update update, AbsSender sender) throws TelegramApiException {
         String messageText = update.getMessage().getText();
         long chatId = update.getMessage().getChatId();
 
-        try {
-            if (isWaitingForTareaName) {
-                // Primera etapa: recibimos el nombre/descripción de la tarea
-                Tarea nuevaTarea = new Tarea();
+        
+        String user_response = messageText;
+        String message = "";
+
+        Tarea nuevaTarea = new Tarea();
                 nuevaTarea.setDescripcion(messageText);
                 nuevaTarea.setActivo(1);
                 nuevaTarea.setEstado("Activo");
@@ -170,48 +186,76 @@ public class NewTareaCommandHandler {
                 nuevaTarea.setHorasEstimadas(0);
                 nuevaTarea.setHorasReales("Aun no se ha completado esta tarea");
                 nuevaTarea.setDesarrollador(userData.getDesarrollador());
-                
+    
+        try {
+            if (isWaitingForTareaName) {
+                // Primera etapa: recibimos el nombre/descripción de la tarea
+                nuevaTarea.setDescripcion(user_response);
                 // Guardamos la tarea en proceso
                 tareasEnProceso.put(chatId, nuevaTarea);
                 
                 // Pasamos a la siguiente etapa
                 isWaitingForTareaName = false;
                 isWaitingForProyecto = true;
-                
-                // Solicitamos el nombre del proyecto
-                SendMessage mensajeProyecto = new SendMessage();
-                mensajeProyecto.setChatId(chatId);
-                mensajeProyecto.setText("Por favor, ingresa el nombre del equipo al que pertenece esta tarea:");
-                sender.execute(mensajeProyecto);
-                
-            } else if (isWaitingForEquipo){
-                // Se espera que el usuario seleccione un equipo
-                // Se obtiene el equipo seleccionado
+
+                // Obtenemos los proyectos del usuario
+                List<Proyecto> proyectos_usuario = userData.getProyectos();
+                List<String> nombres_proyectos = new ArrayList<>();
+                for (Proyecto proyecto : proyectos_usuario) {
+                    nombres_proyectos.add(proyecto.getNombre());
+                }
+
+                // Solicitamos el nombre del equipo
+                message = "Por Favor, Ingresa el nombre del proyecto en el que se encuentra la tarea:\n";
+                for (String nombreProyecto : nombres_proyectos) {message += "\t\t\t- " + nombreProyecto + "\n";}
+                trymessage(update, sender, message);
+
             }else if (isWaitingForProyecto) {
+
                 // Segunda etapa: recibimos el nombre del proyecto
+                Boolean existe = false;
                 Tarea tarea = tareasEnProceso.get(chatId);
-                tarea.setProyecto(messageText);
-                
-                // Pasamos a la siguiente etapa
-                isWaitingForProyecto = false;
-                isWaitingForFechaEntrega = true;
-                
-                // Solicitamos la fecha de entrega con un calendario inline
-                mostrarCalendarioFechaEntrega(chatId, sender);
+                List<Proyecto> proyectos_usuario = userData.getProyectos();
+                List<String> nombres_proyectos = new ArrayList<>();
+                for (Proyecto proyecto : proyectos_usuario) {
+                    nombres_proyectos.add(proyecto.getNombre());
+                }
+
+                for (Proyecto proyecto : proyectos_usuario) {
+                    if (proyecto.getNombre().equals(user_response)) {
+                        tarea.setProyecto(proyecto);
+                        tareasEnProceso.put(chatId, tarea);
+                        isWaitingForProyecto = false;
+                        isWaitingForFechaEntrega = true;
+                        
+                        existe = true;
+                        break;
+                    }
+                }
+
+                if (!existe) {
+                    message = "El proyecto no existe, por favor ingrese un proyecto valido:\n";
+                    for (String nombreProyecto : nombres_proyectos) {message += "\t\t\t- " + nombreProyecto + "\n";}
+                    trymessage(update, sender, message);
+                } else {
+                    // Solicitamos la fecha de entrega con un calendario inline
+                    mostrarCalendarioFechaEntrega(chatId, sender);
+                }
+    
                 
             } else if (isWaitingForFechaEntrega) {
                 // Tercera etapa: recibimos la fecha de entrega
                 // Validamos formato de fecha (asumiendo formato DD/MM/YYYY)
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate fechaEntrega;
+                LocalDateTime fechaEntrega;
                 
                 try {
-                    fechaEntrega = LocalDate.parse(messageText, formatter);
+                    fechaEntrega = LocalDateTime.parse(messageText, formatter);
                     Tarea tarea = tareasEnProceso.get(chatId);
-                    tarea.setFechaEntrega(fechaEntrega.toString());
+                    tarea.setFechaEntrega(fechaEntrega);
                     
                     // Guardamos la tarea en la base de datos
-                    tareaService.agregarTarea(tarea);
+                    tareaService.addTarea(tarea);
                     
                     // Notificamos éxito
                     SendMessage mensajeExito = new SendMessage();
@@ -327,10 +371,15 @@ public class NewTareaCommandHandler {
             } else {
                 // El usuario seleccionó una fecha predefinida
                 Tarea tarea = tareasEnProceso.get(chatId);
-                tarea.setFechaEntrega(fechaSeleccionada);
+                // Pasamos de string a locadatetime
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate fecha = LocalDate.parse(fechaSeleccionada, formatter);
+                LocalDateTime fechaEntrega = fecha.atStartOfDay();
+                tarea.setFechaEntrega(fechaEntrega);
+                
                 
                 // Guardamos la tarea en la base de datos
-                tareaService.agregarTarea(tarea);
+                tareaService.addTarea(tarea);
                 
                 // Notificamos éxito
                 SendMessage mensajeExito = new SendMessage();
@@ -361,5 +410,5 @@ public class NewTareaCommandHandler {
             sender.execute(message);
         }
     }
-    */
+    
 }

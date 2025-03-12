@@ -131,4 +131,16 @@ import java.time.LocalDateTime;
      public void setActivo(Integer activo) {
          this.activo = activo;
      }
+
+     @Override
+        public String toString() {
+            return "Sprint{" +
+                    "idSprint=" + idSprint +
+                    ", proyecto=" + proyecto.getNombre() +
+                    ", fechaInicio=" + fechaInicio +
+                    ", fechaFin=" + fechaFin +
+                    ", nombre='" + nombre + '\'' +
+                    ", activo=" + activo +
+                    '}';
+        }
  }

@@ -43,5 +43,11 @@ public class SprintService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteSprint'");
     }
+
+    public List<Sprint> findByidProyecto(Long id) {
+        List<Sprint> sprints = sprintRepository.findByIdProyecto(id);
+        return sprints;
+        
+    }
 }
 

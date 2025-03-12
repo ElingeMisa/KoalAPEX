@@ -208,6 +208,7 @@ public class Tarea {
         this.sprint = sprint;
     }
 
+    
     @Override
     public String toString() {
         return "Tarea{" +
