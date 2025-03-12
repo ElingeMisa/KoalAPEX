@@ -85,7 +85,7 @@ public class Tarea {
     @JoinColumn(name = "IDPROYECTO", referencedColumnName = "IDPROYECTO")
     private Proyecto proyecto;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "IDSPRINT", referencedColumnName = "IDSPRINT")
     private Sprint sprint;
 
