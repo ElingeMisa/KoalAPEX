@@ -1,8 +1,9 @@
-/*/
+
 package com.springboot.MyTodoList.controller;
 
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.service.SprintService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class SprintController {
     @GetMapping("/{id}")
     public ResponseEntity<Sprint> getSprintById(@PathVariable int id) {
         try {
-            Sprint sprint = sprintService.findById(id);
+            Sprint sprint = sprintService.findByIdSprint(id);
             return new ResponseEntity<>(sprint, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -72,4 +73,3 @@ public class SprintController {
         }
     }
 }
-*/

@@ -1,10 +1,9 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
+import com.springboot.MyTodoList.data.UserData;
 import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
-import com.springboot.MyTodoList.controller.DesarrolladorService;
-import com.springboot.MyTodoList.controller.UsuariosService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
@@ -20,7 +19,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.springboot.MyTodoList.repository.UsuariosRepository;
+import com.springboot.MyTodoList.service.DesarrolladorService;
 import com.springboot.MyTodoList.service.TareaService;
+import com.springboot.MyTodoList.service.UsuariosService;
 
 /**
  * Handles the new hello command
@@ -33,15 +34,18 @@ import org.springframework.stereotype.Component;
  */
 @Component  // <-- Agregar esta anotación para que Spring gestione esta clase
 public class NewHelloCommandHandler implements CommandHandler {
+    
     private static final Logger logger = LoggerFactory.getLogger(NewHelloCommandHandler.class);
 
     private final UsuariosService usuariosService;
     private final DesarrolladorService desarrolladorService;
     private final TareaService tareaService;
+    private final UserData userData;
 
 
     @Autowired
-    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService) {
+    public NewHelloCommandHandler(DesarrolladorService desarrolladorService, UsuariosService usuariosService, TareaService tareaService, UserData userData) {
+        this.userData = userData;
         this.tareaService = tareaService;
         this.usuariosService = usuariosService;
         this.desarrolladorService = desarrolladorService;
@@ -76,6 +80,7 @@ public class NewHelloCommandHandler implements CommandHandler {
 
         trymessage(sender, message, messageToTelegram);
 
+        // Busqueda de usuario con el token del canal
         message = "Información adicional: \n";
 
         trymessage(sender, message, messageToTelegram);
@@ -83,9 +88,12 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Usuarios> usuarios = usuariosService.finByTokenChannel(chatidString);
-                
-        for (Usuarios usuario : usuarios) {
-            message += usuario.toString();
+        for (Usuarios usuario : usuarios) {message += usuario.toString();}
+        
+        if(!usuarios.isEmpty()){
+            userData.setUsuario(usuarios.get(0));
+        }else{
+            message = "No se encontraron datos de usuario \n";
         }
 
         trymessage(sender, message, messageToTelegram);
@@ -97,10 +105,18 @@ public class NewHelloCommandHandler implements CommandHandler {
         message = "";
 
         List<Desarrollador> desarrollador = desarrolladorService.findByIdUsuario(usuarios.get(0).getId());
-        for (Desarrollador des : desarrollador) {
-            message += des.toString();
+        for (Desarrollador des : desarrollador) {message += des.toString();}
+        
+        if(!desarrollador.isEmpty()){
+            userData.setDesarrollador(desarrollador.get(0));
+        }else{
+            message = "No se encontraron datos de desarrollador \n";
         }
         
+        trymessage(sender, message, messageToTelegram);
+
+        message = "Manager : ";
+
         trymessage(sender, message, messageToTelegram);
 
         message = "Tareas asignadas: \n";
@@ -109,10 +125,15 @@ public class NewHelloCommandHandler implements CommandHandler {
 
         List<Tarea> tareas = tareaService.findByIdDesarrollador(desarrollador.get(0).getIdDesarrollador());
         message = "";
+        
+        for (Tarea tarea : tareas) {message += tarea.toString();}
 
-        for (Tarea tarea : tareas) {
-            message += tarea.toString();
+        if(!tareas.isEmpty()){
+            userData.setTareas(tareas);
+        }else{
+            message = "No se encontraron tareas asignadas \n";
         }
+        
         messageToTelegram.setText(message);
         trymessage(sender, message, messageToTelegram);
     }

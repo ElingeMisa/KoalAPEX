@@ -1,29 +1,17 @@
 package com.springboot.MyTodoList.controller;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.controller.Handlers.CommandHandler;
-
 import com.springboot.MyTodoList.controller.Handlers.AddItemCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.DefaultCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.HideCommandHandler;
@@ -33,12 +21,10 @@ import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewToDoItemHandler;
 import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
 
-import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.ToDoItemService;
-import com.springboot.MyTodoList.util.BotCommands;
-import com.springboot.MyTodoList.util.BotHelper;
-import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import com.springboot.MyTodoList.data.UserData;
 
 /* */
 
@@ -56,20 +42,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     private final String botName;
 
     private final NewHelloCommandHandler newHelloCommandHandler;
+    private final StartCommandHandler startCommandHandler;
+
+    public UserData userData;
 
     @Autowired 
-    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, NewHelloCommandHandler newHelloCommandHandler) {
+    public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, NewHelloCommandHandler newHelloCommandHandler, StartCommandHandler startCommandHandler, UserData userData) {
+        
         super(botToken);
         logger.info("Bot Token: " + botToken);
         logger.info("Bot name: " + botName);
+        
         this.botName = botName;
         this.newHelloCommandHandler = newHelloCommandHandler;  // <-- Guardamos la instancia inyectada
+        this.startCommandHandler = startCommandHandler;
+        this.userData = userData;
 
         // Initialize handlers
         newToDoItemHandler = new NewToDoItemHandler(toDoItemService);
         
         // Flujos de comandos
-        commandHandlers.add(new StartCommandHandler());
+        commandHandlers.add(startCommandHandler);
         commandHandlers.add(new ListItemsCommandHandler(toDoItemService));
         commandHandlers.add(new AddItemCommandHandler(toDoItemService));
         commandHandlers.add(new ItemActionHandler(toDoItemService));

@@ -1,11 +1,9 @@
 com\springboot\MyTodoList\controller\UsuariosController.class
 com\springboot\MyTodoList\controller\Handlers\HideCommandHandler.class
 com\springboot\MyTodoList\util\BotMessages.class
-com\springboot\MyTodoList\controller\UsuariosService.class
 com\springboot\MyTodoList\controller\Handlers\DefaultCommandHandler.class
 com\springboot\MyTodoList\controller\Handlers\AddItemCommandHandler.class
 com\springboot\MyTodoList\config\CorsConfig.class
-com\springboot\MyTodoList\controller\DesarrolladorService.class
 com\springboot\MyTodoList\data\UsuarioEquipoDTORepository.class
 com\springboot\MyTodoList\MyTodoListApplication.class
 com\springboot\MyTodoList\controller\Handlers\NewHelloCommandHandler.class

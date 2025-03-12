@@ -3,11 +3,14 @@ import API from '../API/API';
 import KPI_Board from "../KPI/KPI_Board";
 import { DragDropContext } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
 
 export default function KPIs() {
   const [isLoading, setLoading] = useState(false);
-  const [TAREAS, setTAREAS] = useState([]);
   const [error, setError] = useState(null);
+
+  const [TAREAS, setTAREAS] = useState([]);
+  const [SPRINTS, setSPRINTS] = useState([]);
 
   // testing mode
   const testing_mode = false;
@@ -52,7 +55,27 @@ export default function KPIs() {
           setLoading(false);
           setError(error);
         });
+    
+    setLoading(true);
+    fetch(API.SPRINTS)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Something went wrong ...');
+        }
+      })
+      .then(
+        (result) => {
+          setLoading(false);
+          setSPRINTS(result);
+        },
+        (error) => {
+          setLoading(false);
+          setError(error);
+        });
   }, []);
+
 
   // Board and Cards setup
   const [data, setData] = useState(
@@ -141,14 +164,46 @@ export default function KPIs() {
     if (cardIndex < 0) return;
 
     tempBoards[index].card[cardIndex] = card;
-    console.log(tempBoards);
     setData(tempBoards);
   };
 
   // KPIs calculation
-  const tareas_completadas = TAREAS.filter((item) => item.estado == "Completado").length;
-  const tareas_activas = TAREAS.filter((item) => item.estado == "Activo").length;
+  const current_sprint = SPRINTS.filter((item) => dayjs().isAfter(item.fechaInicio) && dayjs().isBefore(item.fechaFin));
+  const previous_sprints = SPRINTS.filter((item) => dayjs().isAfter(item.fechaFin));
 
+  const tareas_activas = () => {
+    return TAREAS.filter((item) => 
+      item.estado == "Activa" && 
+      item.idSprint === current_sprint.idSprint
+    ).length;
+  };
+  const tareas_activas_prev = () => {
+    return TAREAS.filter((item) => 
+      item.estado == "Activa" && 
+      previous_sprints.map(
+        (sprint) => item.idSprint === sprint.idSprint
+      )
+    ).length;
+  };
+
+  const tareas_para_sprint = () => {
+    return TAREAS.filter((item) => 
+      item.fechaEntrega != null || 
+      item.fechaEntrega != ' ' && 
+      item.idSprint === current_sprint.idSprint
+    ).length;
+  };
+  const tareas_para_sprint_prev = () => {
+    return TAREAS.filter((item) => 
+      item.fechaEntrega != null || 
+      item.fechaEntrega != ' ' && 
+      previous_sprints.map(
+        (sprint) => item.idSprint === sprint.idSprint
+      )
+    ).length;
+  };
+
+  // Save data to local storage
   useEffect(() => {
     localStorage.setItem("kpi-cards", JSON.stringify(data));
   }, [data]);
@@ -171,7 +226,7 @@ export default function KPIs() {
         else
         {
           addCard(
-            "Tareas Completadas", 
+            "Tareas para sprint actual", 
             data[0].id,
             [{ tagName: "+0%", color: "#7F7F7F" }],
           );
@@ -190,12 +245,44 @@ export default function KPIs() {
             updateCard(data[0].id, item.id, {
               id: item.id,
               title: item.title,
-              tags: item.tags,
+              tags: 
+                item.title === "Tareas Activas" ?
+                  [{
+                    tagName: 
+                      (
+                        tareas_activas() < tareas_activas_prev() ? "-" : "+") 
+                      + Math.abs(tareas_activas() - tareas_activas_prev()) 
+                      + "%", 
+                    color: 
+                      tareas_activas() > tareas_activas_prev() ? 
+                      "#C74634" //Rojo en +x%
+                      : tareas_activas() < tareas_activas_prev() ? 
+                      "#33553C" //Verde en -x%
+                      : 
+                      "#7F7F7F" //Gris en +0%
+                  }]
+                : item.title === "Tareas para sprint actual" ?
+                  [{
+                    tagName: 
+                      (
+                        tareas_para_sprint() < tareas_para_sprint_prev() ? "-" : "+") 
+                      + Math.abs(tareas_para_sprint() - tareas_para_sprint_prev()) 
+                      + "%",
+                    color:
+                      tareas_para_sprint() > tareas_para_sprint_prev() ? 
+                      "#C74634" //Rojo en +x%
+                      : tareas_para_sprint() < tareas_para_sprint_prev() ? 
+                      "#33553C" //Verde en -x%
+                      : 
+                      "#7F7F7F" //Gris en +0%
+                  }]
+                :
+                  item.tags,
               data:
-                item.title === "Tareas Completadas" ?
-                  tareas_completadas
-                : item.title === "Tareas Activas" ?
-                  tareas_activas
+                item.title === "Tareas Activas" ?
+                  tareas_activas()
+                : item.title === "Tareas para sprint actual" ?
+                  tareas_para_sprint()
                 : 
                   item.data
             });
@@ -203,7 +290,10 @@ export default function KPIs() {
         }
       }
     }
-  }, [data, addBoard, addCard, updateCard, test_items, testing_mode, tareas_completadas, tareas_activas]);
+  }, [data, addBoard, addCard, updateCard, test_items, testing_mode, 
+    tareas_activas,
+    tareas_para_sprint
+  ]);
 
   return (
     <div>

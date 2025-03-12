@@ -1,4 +1,4 @@
-/*
+
 package com.springboot.MyTodoList.repository;
 
 import javax.transaction.Transactional;
@@ -14,4 +14,3 @@ import com.springboot.MyTodoList.model.EquipoProyecto;
 public interface EquipoProyectoRepository extends JpaRepository<EquipoProyecto, Integer> {
     
 }
-*/
