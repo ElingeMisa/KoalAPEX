@@ -30,4 +30,8 @@ public interface SprintRepository extends JpaRepository<Sprint, Integer> {
     @Query("SELECT s FROM Sprint s WHERE s.proyecto.id = :id AND s.fechaInicio < :fechaEntrega ORDER BY s.fechaInicio DESC")
     List<Sprint> getClosestByTimestamp(@Param("fechaEntrega") LocalDateTime fechaEntrega, @Param("id") Long id);
 
+    //SELECT s.* FROM TODOUSER.SPRINT s WHERE s.IDSPRINT = 11
+    @Query("SELECT s FROM Sprint s WHERE s.idSprint = :id")
+    Sprint findByIdSprint(@Param("id") Long id);
+
 }

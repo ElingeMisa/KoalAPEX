@@ -127,7 +127,7 @@ public class NewTareaCommandHandler {
                 Tarea nuevaTarea = new Tarea();
                 nuevaTarea.setDescripcion(user_response);
                 nuevaTarea.setActivo(1);
-                nuevaTarea.setEstado("Activo");
+                nuevaTarea.setEstado("Activa");
                 nuevaTarea.setCategoria("Tarea");
                 nuevaTarea.setHorasEstimadas(0);
                 nuevaTarea.setHorasReales("Aun no se ha completado esta tarea");

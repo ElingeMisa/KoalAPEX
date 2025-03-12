@@ -30,7 +30,7 @@ public class SprintService {
 
     public Sprint findById(int id) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return sprintRepository.findByIdSprint((long) id);
     }
 
     public Sprint addSprint(Sprint sprint) {
