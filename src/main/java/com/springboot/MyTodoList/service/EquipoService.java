@@ -44,7 +44,7 @@ public class EquipoService {
     }
 
     public List<Equipo> findByIdUsuario(Long id) {
-        List<Equipo> equipos = equipoRepository.findByUsuarioId(id);
+        List<Equipo> equipos = equipoRepository.findByIdUsuario(id);
         return equipos;
         
     }

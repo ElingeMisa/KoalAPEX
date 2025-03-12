@@ -103,4 +103,15 @@ public class Proyecto {
     public void setActivo(Integer activo) {
         this.activo = activo;
     }
+
+    @Override
+    public String toString() {
+        return "Proyecto{" +
+                "idProyecto=" + idProyecto +
+                ", nombre='" + nombre + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                ", descripcion='" + descripcion + '\'' +
+                ", activo=" + activo +
+                '}';
+    }
 }

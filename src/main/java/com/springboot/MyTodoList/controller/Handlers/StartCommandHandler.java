@@ -215,10 +215,12 @@ public class StartCommandHandler implements CommandHandler {
         if (!equipos.isEmpty()) {
             for (Equipo equipo : equipos) {message += equipo.toString();}
             userData.setEquipos(equipos);
+
         } else {
             message += "No se encontraron equipos registrados \n";
             
         }
+        trymessage(sender, message, messageToTelegram);
 
         // Busca los proyectos de un usuario
         trymessage(sender, "Proyectos registrados de este usuario: \n", messageToTelegram);
@@ -240,6 +242,7 @@ public class StartCommandHandler implements CommandHandler {
         } else {
             message += "No se encontraron proyectos registrados \n";
         }
+        trymessage(sender, message, messageToTelegram);
     }
     @Override
     public void handle(Update update, AbsSender sender) throws TelegramApiException {

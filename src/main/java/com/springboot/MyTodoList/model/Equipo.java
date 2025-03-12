@@ -3,6 +3,7 @@ package com.springboot.MyTodoList.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -54,8 +55,8 @@ public class Equipo {
     private Integer activo = 1;
 
     // Relación bidireccional con UsuarioEquipo
-    @OneToMany(mappedBy = "equipo", fetch = FetchType.LAZY)
-    private Set<UsuarioEquipo> usuarioEquipos = new HashSet<>();
+    @OneToMany(mappedBy = "equipo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UsuarioEquipo> usuarioEquipos;
 
     // Constructores
     public Equipo() {
@@ -100,11 +101,21 @@ public class Equipo {
         this.activo = activo;
     }
 
-    public Set<UsuarioEquipo> getUsuarioEquipos() {
+    public List<UsuarioEquipo> getUsuarioEquipos() {
         return usuarioEquipos;
     }
 
-    public void setUsuarioEquipos(Set<UsuarioEquipo> usuarioEquipos) {
+    public void setUsuarioEquipos(List<UsuarioEquipo> usuarioEquipos) {
         this.usuarioEquipos = usuarioEquipos;
+    }
+
+    @Override
+    public String toString() {
+        return "Equipo{" +
+                "idEquipo=" + idEquipo +
+                ", nombre='" + nombre + '\'' +
+                ", notificacion=" + notificacion +
+                ", activo=" + activo +
+                '}';
     }
 }
