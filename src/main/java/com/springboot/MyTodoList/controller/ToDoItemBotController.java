@@ -13,11 +13,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.controller.Handlers.CommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.AddItemCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.AddTareaCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.DefaultCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.HideCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.ItemActionHandler;
 import com.springboot.MyTodoList.controller.Handlers.ListItemsCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.NewTareaCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewToDoItemHandler;
 import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
 
@@ -38,12 +40,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
     private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
     private final List<CommandHandler> commandHandlers = new ArrayList<>();
-    private final NewToDoItemHandler newToDoItemHandler;
     private final String botName;
-
+    
     private final NewHelloCommandHandler newHelloCommandHandler;
     private final StartCommandHandler startCommandHandler;
+    private final AddTareaCommandHandler addTareaCommandHandler;
+    private final NewToDoItemHandler newToDoItemHandler;
+    private final NewTareaCommandHandler newTareaCommandHandler;
 
+    private boolean StartCommandHandler;
     public UserData userData;
 
     @Autowired 
@@ -53,8 +58,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         String botName, 
         ToDoItemService toDoItemService, 
         NewHelloCommandHandler newHelloCommandHandler, 
-        StartCommandHandler startCommandHandler, 
-        UserData userData
+        StartCommandHandler startCommandHandler,
+        AddTareaCommandHandler addTareaCommandHandler,
+        NewTareaCommandHandler newTareaCommandHandler,
+        UserData userData,
+        Boolean StartCommandHandler
     ) 
     {    
         super(botToken);
@@ -64,6 +72,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         this.botName = botName;
         this.newHelloCommandHandler = newHelloCommandHandler;  // <-- Guardamos la instancia inyectada
         this.startCommandHandler = startCommandHandler;
+        this.addTareaCommandHandler = addTareaCommandHandler;
+        this.newTareaCommandHandler = newTareaCommandHandler;
+        this.StartCommandHandler = StartCommandHandler;
         this.userData = userData;
 
         // Initialize handlers
@@ -76,53 +87,91 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         commandHandlers.add(new ItemActionHandler(toDoItemService));
         commandHandlers.add(newHelloCommandHandler);  // <-- Usamos la instancia inyectada
         commandHandlers.add(new HideCommandHandler());
+        commandHandlers.add(addTareaCommandHandler);
         commandHandlers.add(new DefaultCommandHandler());
     }
     
     @Override
     public void onUpdateReceived(Update update) {
-        
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (StartCommandHandler){
 
-            String messageTextFromTelegram = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
+            if (update.hasMessage() && update.getMessage().hasText()) {
+
+                String messageTextFromTelegram = update.getMessage().getText();
+                long chatId = update.getMessage().getChatId();
+
+                try {
+                    // Los items nuevos se manejan de manera especial
+                    //if (newToDoItemHandler.isExpectingNewItem()) {
+                    //    newToDoItemHandler.handleNewItemText(update, this);
+                    //    return;
+                    //}
+                    // En caso de que add tarea se haya ejecutado
+                    if( newTareaCommandHandler.isEsperandoNombre() || 
+                        newTareaCommandHandler.isEsperandoFechaEntrega() || 
+                        newTareaCommandHandler.isEsperandoProyecto() 
+                        )
+                    {
+                        newTareaCommandHandler.handle(update, this);
+                        return;
+                    }
+                    // Recorremos los comandos para ver si alguno coincide con el comando recibido
+                    boolean handled = false;
+                    
+                    for (CommandHandler handler : commandHandlers) {
+
+                        if (handler.canHandle(messageTextFromTelegram)) {
+                            
+                            handler.handle(update, this);
+                            
+                            // Special case for setting the expectingNewItem flag
+                            //if (handler instanceof AddItemCommandHandler) {
+                            //    newToDoItemHandler.setExpectingNewItem(true);
+                            //}
+
+                            if(handler instanceof AddTareaCommandHandler){
+                                newTareaCommandHandler.setEsperandoNombre();
+                            }
+                            
+                            handled = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!handled) {
+                        // Este caso no deberia ocurrir porque el DefaultCommandHandler siempre deberia manejarlo
+                        SendMessage messageToTelegram = new SendMessage();
+                        messageToTelegram.setChatId(chatId);
+                        String feedback = '"' + messageTextFromTelegram + " \"no es un comando valido." + BotMessages.INVALID_COMMAND.getMessage() ;
+                        messageToTelegram.setText(feedback);
+                        execute(messageToTelegram);
+                        
+
+                    }
+                } catch (TelegramApiException e) {
+                    logger.error("Error handling update: " + e.getLocalizedMessage(), e);
+                }
+            }
+
+        }else{
+
+            StartCommandHandler = true;
+
+            SendMessage messageToTelegram = new SendMessage();
+            messageToTelegram.setChatId(update.getMessage().getChatId());
+            messageToTelegram.setText(BotMessages.BOT_NOT_STARTED.getMessage());
 
             try {
-                // Los items nuevos se manejan de manera especial
-                if (newToDoItemHandler.isExpectingNewItem()) {
-                    newToDoItemHandler.handleNewItemText(update, this);
-                    return;
-                }
-                // Recorremos los comandos para ver si alguno coincide con el comando recibido
-                boolean handled = false;
-                
-                for (CommandHandler handler : commandHandlers) {
-
-                    if (handler.canHandle(messageTextFromTelegram)) {
-                        handler.handle(update, this);
-                        
-                        // Special case for setting the expectingNewItem flag
-                        if (handler instanceof AddItemCommandHandler) {
-                            newToDoItemHandler.setExpectingNewItem(true);
-                        }
-                        
-                        handled = true;
-                        break;
-                    }
-                }
-                
-                if (!handled) {
-                    // Este caso no deberia ocurrir porque el DefaultCommandHandler siempre deberia manejarlo
-                    SendMessage messageToTelegram = new SendMessage();
-                    messageToTelegram.setChatId(chatId);
-                    String feedback = '"' + messageTextFromTelegram + " \"no es un comando valido." + BotMessages.INVALID_COMMAND.getMessage() ;
-                    messageToTelegram.setText(feedback);
-                    execute(messageToTelegram);
-                    
-
-                }
+                execute(messageToTelegram);
             } catch (TelegramApiException e) {
                 logger.error("Error handling update: " + e.getLocalizedMessage(), e);
+            }
+
+            try {
+                startCommandHandler.handle(update, this);
+            } catch (TelegramApiException e) {
+                
+                e.printStackTrace();
             }
         }
     }

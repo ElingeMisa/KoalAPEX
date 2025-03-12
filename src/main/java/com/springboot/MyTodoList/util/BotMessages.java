@@ -19,8 +19,8 @@ public enum BotMessages {
 	NEW_TAREA_ADDED("¡Nueva tarea añadida! Selecciona /todolist para volver a la lista de tareas, o /start para ir a la pantalla principal."),
 	NO_TAREAS("¡No hay tareas para mostrar! Selecciona /start para ir a la pantalla principal."),
 	NO_TAREAS_TO_DELETE("¡No hay tareas para eliminar! Selecciona /start para ir a la pantalla principal."),
-	NO_TAREAS_TO_DONE("¡No hay tareas para marcar como completadas! Selecciona /start para ir a la pantalla principal."),;
-
+	NO_TAREAS_TO_DONE("¡No hay tareas para marcar como completadas! Selecciona /start para ir a la pantalla principal."),
+	BOT_NOT_STARTED("Hola, veo que no has presionado el boton de inicio, por lo que lo hare yo mismo.\n Iniciando bot...");
 	private String message;
 
 	BotMessages(String enumMessage) {

@@ -120,4 +120,13 @@ public class UserData {
         return sprints;
     }
     
+    public List<Sprint> getSprintsProyecto(Proyecto proyecto) {
+        for (List<Sprint> sprintList : sprints) {
+            if (sprintList.get(0).getProyecto().getIdProyecto() == proyecto.getIdProyecto()) {
+                return sprintList;
+            }
+        }
+                return sprintsProyecto;
+        
+    }
 }

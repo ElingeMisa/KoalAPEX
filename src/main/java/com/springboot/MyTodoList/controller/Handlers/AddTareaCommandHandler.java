@@ -2,6 +2,7 @@ package com.springboot.MyTodoList.controller.Handlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
@@ -16,6 +17,7 @@ import com.springboot.MyTodoList.util.BotMessages;
 /*
  * Primera parte de la creación de una nueva tarea
  */
+@Component
 public class AddTareaCommandHandler implements CommandHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AddTareaCommandHandler.class);
