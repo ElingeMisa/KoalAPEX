@@ -1,12 +1,17 @@
 package com.springboot.MyTodoList.controller.Handlers;
 
+import com.springboot.MyTodoList.data.UserData;
+import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 
+import org.apache.tomcat.jni.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -21,11 +26,22 @@ import java.util.stream.Collectors;
 /**
  * Handles the command to list all to-do items
  */
+@Component
 public class ListItemsCommandHandler implements CommandHandler {
+    
     private static final Logger logger = LoggerFactory.getLogger(ListItemsCommandHandler.class);
+    
+    private final UserData userData;
+    
     private final ToDoItemService toDoItemService;
 
-    public ListItemsCommandHandler(ToDoItemService toDoItemService) {
+    @Autowired
+    public ListItemsCommandHandler
+    (
+        ToDoItemService toDoItemService,
+        UserData userData
+    ) {
+        this.userData = userData;
         this.toDoItemService = toDoItemService;
     }
 
@@ -41,6 +57,10 @@ public class ListItemsCommandHandler implements CommandHandler {
         long chatId = update.getMessage().getChatId();
         
         List<ToDoItem> allItems = toDoItemService.findAll();
+        
+        List<Tarea> tareas = userData.getTareas();
+        String label = "Tareas asignadas a " + userData.getUsuario().getNombre();
+
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboard = new ArrayList<>();
 
@@ -54,7 +74,7 @@ public class ListItemsCommandHandler implements CommandHandler {
         keyboard.add(firstRow);
 
         KeyboardRow myTodoListTitleRow = new KeyboardRow();
-        myTodoListTitleRow.add(BotLabels.MY_TODO_LIST.getLabel());
+        myTodoListTitleRow.add(label);
         keyboard.add(myTodoListTitleRow);
 
         // Active items
@@ -62,10 +82,20 @@ public class ListItemsCommandHandler implements CommandHandler {
                 .filter(item -> !item.isDone())
                 .collect(Collectors.toList());
 
-        for (ToDoItem item : activeItems) {
+        List<Tarea> activeTareas = tareas.stream()
+                .filter(tarea -> tarea.isActivo())
+                .collect(Collectors.toList());
+
+        //for (ToDoItem item : activeItems) {
+        //    KeyboardRow currentRow = new KeyboardRow();
+        //    currentRow.add(item.getDescription());
+        //   currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.DONE.getLabel());
+        //    keyboard.add(currentRow);
+        //}
+        for (Tarea tarea : activeTareas) {
             KeyboardRow currentRow = new KeyboardRow();
-            currentRow.add(item.getDescription());
-            currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.DONE.getLabel());
+            currentRow.add(tarea.getDescripcion());
+            currentRow.add(tarea.getIdTarea() + BotLabels.DASH.getLabel() + BotLabels.DONE.getLabel());
             keyboard.add(currentRow);
         }
 
@@ -73,24 +103,37 @@ public class ListItemsCommandHandler implements CommandHandler {
         List<ToDoItem> doneItems = allItems.stream()
                 .filter(ToDoItem::isDone)
                 .collect(Collectors.toList());
+        
+        List<Tarea> doneTareas = tareas.stream()
+                .filter(Tarea -> !Tarea.isActivo())
+                .collect(Collectors.toList());
 
-        for (ToDoItem item : doneItems) {
+        //for (ToDoItem item : doneItems) {
+        //    KeyboardRow currentRow = new KeyboardRow();
+        //    currentRow.add(item.getDescription());
+        //    currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.UNDO.getLabel());
+        //    currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.DELETE.getLabel());
+        //    keyboard.add(currentRow);
+        //}
+        for (Tarea tarea : doneTareas) {
             KeyboardRow currentRow = new KeyboardRow();
-            currentRow.add(item.getDescription());
-            currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.UNDO.getLabel());
-            currentRow.add(item.getID() + BotLabels.DASH.getLabel() + BotLabels.DELETE.getLabel());
+            currentRow.add(tarea.getDescripcion());
+            currentRow.add(tarea.getIdTarea() + BotLabels.DASH.getLabel() + BotLabels.UNDO.getLabel());
+            currentRow.add(tarea.getIdTarea() + BotLabels.DASH.getLabel() + BotLabels.DELETE.getLabel());
             keyboard.add(currentRow);
         }
 
         // command back to main screen at bottom
         KeyboardRow mainScreenRowBottom = new KeyboardRow();
-        mainScreenRowBottom.add(BotLabels.SHOW_MAIN_SCREEN.getLabel());
+        mainScreenRowBottom.add(label);
         keyboard.add(mainScreenRowBottom);
 
         keyboardMarkup.setKeyboard(keyboard);
 
+        // 
         SendMessage messageToTelegram = new SendMessage();
         messageToTelegram.setChatId(chatId);
+
         messageToTelegram.setText(BotLabels.MY_TODO_LIST.getLabel());
         messageToTelegram.setReplyMarkup(keyboardMarkup);
 

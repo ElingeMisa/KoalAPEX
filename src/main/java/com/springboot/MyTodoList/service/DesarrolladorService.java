@@ -2,10 +2,10 @@
 package com.springboot.MyTodoList.service;
 
 import java.util.List;
-import java.util.List;
+import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.springboot.MyTodoList.model.Desarrollador;
 import com.springboot.MyTodoList.repository.DesarrolladorRepository;
@@ -43,13 +43,15 @@ public class DesarrolladorService {
     }
 
     public List<Desarrollador> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return desarrolladorRepository.findAll();
     }
 
     public Desarrollador findById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        Optional<Desarrollador> desarrollador = desarrolladorRepository.findById(id);
+        if (desarrollador.isPresent()) {
+            return desarrollador.get();
+        }
+        return null;
     }
 
     public Desarrollador addDesarrollador(Desarrollador desarrollador) {

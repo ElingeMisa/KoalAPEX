@@ -1,5 +1,7 @@
 package com.springboot.MyTodoList;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +17,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
+import com.springboot.MyTodoList.controller.Handlers.AddTareaCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.ListItemsCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.NewTareaCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
 import com.springboot.MyTodoList.data.UserData;
 import com.springboot.MyTodoList.service.SprintService;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import oracle.security.o3logon.a;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -53,15 +60,42 @@ public class MyTodoListApplication implements CommandLineRunner {
 	@Autowired
 	private StartCommandHandler startCommandHandler;
 
+	@Autowired
+	private AddTareaCommandHandler addTareaCommandHandler;
+
+	@Autowired
+	private NewTareaCommandHandler newTareaCommandHandler;
+
+	@Autowired
+	private ListItemsCommandHandler listItemsCommandHandler;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyTodoListApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		try {
-			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, toDoItemService, newHelloCommandHandler, startCommandHandler, userData));
+			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(
+				DefaultBotSession.class
+			);
+
+			telegramBotsApi.registerBot(
+				new ToDoItemBotController
+					(
+						telegramBotToken, 
+						botName, 
+						toDoItemService, 
+						newHelloCommandHandler, 
+						startCommandHandler, 
+						addTareaCommandHandler,
+						newTareaCommandHandler,
+						listItemsCommandHandler,
+						userData,
+						false
+					)
+				);
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

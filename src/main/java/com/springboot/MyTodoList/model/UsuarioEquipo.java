@@ -36,22 +36,23 @@ ALTER TRIGGER "TODOUSER"."USUARIO_EQUIPO_TRG" ENABLE;
 
 
  @Entity
- @Table(name = "Usuario_Equipo", schema = "TODOUSER")
+ @Table(name = "USUARIO_EQUIPO", schema = "TODOUSER")
  public class UsuarioEquipo {
  
      @Id
      @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_equipo_seq")
      @SequenceGenerator(name = "usuario_equipo_seq", sequenceName = "Usuario_Equipo_seq", allocationSize = 1)
-     @Column(name = "idUsuario_equipo", nullable = false)
+     @Column(name = "IDUSUARIO_EQUIPO", nullable = false)
      private Long idUsuarioEquipo;  // Cambiado de Integer a Long
  
      @ManyToOne
-     @JoinColumn(name = "idUsuario", referencedColumnName = "IDUSUARIO", nullable = true)
-     private Usuarios usuario;
+     @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO", nullable = true)
+     private Usuarios usuario;     
  
-     @ManyToOne
-     @JoinColumn(name = "idEquipo", referencedColumnName = "IDEQUIPO", nullable = true)
-     private Equipo equipo;
+    @ManyToOne
+    @JoinColumn(name = "IDEQUIPO", referencedColumnName = "IDEQUIPO", nullable = true)
+    private Equipo equipo;
+
  
      @Column(name = "Rol", length = 100)
      private String rol = "Desarrollador";

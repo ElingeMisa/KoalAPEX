@@ -1,9 +1,12 @@
 
 package com.springboot.MyTodoList.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,6 +82,52 @@ public class TareaService {
         return tareaRepository.save(tarea);
     }
 
+    @Transactional
+    public void agregarTarea(Tarea tarea) {
+        // Asegurar que los objetos relacionados tengan sus IDs correctos
+        Integer idDesarrollador = null;
+        Number idProyecto = null;
+        Integer idSprint = null;
+        
+        if (tarea.getDesarrollador() != null) {
+            idDesarrollador = tarea.getDesarrollador().getIdDesarrollador();
+        } else {
+            throw new IllegalArgumentException("El desarrollador no puede ser nulo para crear una tarea");
+        }
+        
+        if (tarea.getProyecto() != null) {
+            // Convertimos explícitamente Long a Number para evitar problemas de tipado con Oracle
+            idProyecto = new BigDecimal(tarea.getProyecto().getIdProyecto());
+        } else {
+            throw new IllegalArgumentException("El proyecto no puede ser nulo para crear una tarea");
+        }
+        
+        if (tarea.getSprint() != null) {
+            idSprint = tarea.getSprint().getIdSprint();
+        }
+        
+        try {
+            // Dejamos que el trigger de la base de datos genere el ID
+            tareaRepository.agregarTarea(
+                tarea.getDescripcion(),
+                tarea.getFechaEntrega(),
+                tarea.getHorasEstimadas(),
+                tarea.getHorasReales(),
+                tarea.getActivo(),
+                tarea.getEstado(),
+                tarea.getCategoria(),
+                idDesarrollador,
+                idProyecto,
+                idSprint
+            );
+        } catch (Exception e) {
+            // Log detailed error information
+            System.err.println("Error al agregar tarea: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw to maintain transaction behavior
+        }
+    }
+
     public Tarea updateTarea(int id, Tarea tarea) {
         Optional<Tarea> tareaOptional = tareaRepository.findById(id);
         if (tareaOptional.isPresent()) {
@@ -98,7 +147,7 @@ public class TareaService {
         return null;
     }
 
-    public List<Tarea> findByTokenChannel( String tokenChannel) {
+    public List<Tarea> findByTokenChannel(String tokenChannel) {
         List<Tarea> tareas = tareaRepository.findByTokenChannel(tokenChannel);
         if (tareas == null || tareas.isEmpty()) {
             tareas = new ArrayList<>();
@@ -115,6 +164,4 @@ public class TareaService {
         tareaRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    
 }

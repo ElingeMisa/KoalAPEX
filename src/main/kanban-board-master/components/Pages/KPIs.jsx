@@ -11,6 +11,7 @@ export default function KPIs() {
 
   const [TAREAS, setTAREAS] = useState([]);
   const [SPRINTS, setSPRINTS] = useState([]);
+  const [DESARROLLADORES, setDESARROLLADORES] = useState([]);
 
   // testing mode
   const testing_mode = false;
@@ -74,7 +75,26 @@ export default function KPIs() {
           setLoading(false);
           setError(error);
         });
-  }, []);
+    
+    setLoading(true);
+    fetch(API.DESARROLLADORES)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Something went wrong ...');
+        }
+      })
+      .then(
+        (result) => {
+          setLoading(false);
+          setDESARROLLADORES(result);
+        },
+        (error) => {
+          setLoading(false);
+          setError(error);
+        });
+  }, [API, setLoading, setError, setTAREAS, setSPRINTS, setDESARROLLADORES]);
 
 
   // Board and Cards setup
@@ -168,39 +188,43 @@ export default function KPIs() {
   };
 
   // KPIs calculation
-  const current_sprint = SPRINTS.filter((item) => dayjs().isAfter(item.fechaInicio) && dayjs().isBefore(item.fechaFin));
+  const current_sprint = SPRINTS.filter((item) => dayjs().isAfter(item.fechaInicio) && dayjs().isBefore(item.fechaFin))[0];
   const previous_sprints = SPRINTS.filter((item) => dayjs().isAfter(item.fechaFin));
 
   const tareas_activas = () => {
     return TAREAS.filter((item) => 
-      item.estado == "Activa" && 
-      item.idSprint === current_sprint.idSprint
+      item.estado === "Activa" && 
+      item.sprint.idSprint === current_sprint.idSprint
     ).length;
   };
-  const tareas_activas_prev = () => {
-    return TAREAS.filter((item) => 
-      item.estado == "Activa" && 
+  const tareas_activas_prev = () => { // Cálculo incorrecto, es temporal. Debe considerar todas las tareas que estuvieron activas
+    return TAREAS.filter((item) =>
+      item.estado === "Activa" &&
       previous_sprints.map(
-        (sprint) => item.idSprint === sprint.idSprint
+        (sprint) => item.sprint.idSprint === sprint.idSprint
       )
     ).length;
   };
 
-  const tareas_para_sprint = () => {
-    return TAREAS.filter((item) => 
-      item.fechaEntrega != null || 
-      item.fechaEntrega != ' ' && 
-      item.idSprint === current_sprint.idSprint
-    ).length;
+  const tareas_desarrollador = () => {
+    const divison_tareas = DESARROLLADORES.map((desarrollador) =>
+      TAREAS.filter((item) => 
+        item.desarrollador.idDesarrollador === desarrollador.idDesarrollador && 
+        item.sprint.idSprint === current_sprint.idSprint
+      ).length
+    );
+    return (divison_tareas.reduce((a, b) => a + b, 0) / divison_tareas.length).toFixed(2);
   };
-  const tareas_para_sprint_prev = () => {
-    return TAREAS.filter((item) => 
-      item.fechaEntrega != null || 
-      item.fechaEntrega != ' ' && 
-      previous_sprints.map(
-        (sprint) => item.idSprint === sprint.idSprint
-      )
-    ).length;
+  const tareas_desarrollador_prev  = () => {
+    const divison_tareas = DESARROLLADORES.map((desarrollador) =>
+      TAREAS.filter((item) => 
+        item.desarrollador.idDesarrollador === desarrollador.idDesarrollador && 
+        previous_sprints.map(
+          (sprint) => item.sprint.idSprint === sprint.idSprint
+        )
+      ).length
+    );
+    return (divison_tareas.reduce((a, b) => a + b, 0) / divison_tareas.length).toFixed(2);
   };
 
   // Save data to local storage
@@ -226,12 +250,12 @@ export default function KPIs() {
         else
         {
           addCard(
-            "Tareas para sprint actual", 
+            "Tareas Activas", 
             data[0].id,
             [{ tagName: "+0%", color: "#7F7F7F" }],
           );
           addCard(
-            "Tareas Activas", 
+            "Tareas por Desarrollador", 
             data[0].id,
             [{ tagName: "+0%", color: "#7F7F7F" }],
           );
@@ -245,15 +269,15 @@ export default function KPIs() {
             updateCard(data[0].id, item.id, {
               id: item.id,
               title: item.title,
-              tags: 
+              tags:
                 item.title === "Tareas Activas" ?
                   [{
-                    tagName: 
+                    tagName:
                       (
                         tareas_activas() < tareas_activas_prev() ? "-" : "+") 
-                      + Math.abs(tareas_activas() - tareas_activas_prev()) 
+                      + Math.abs(100 - (tareas_activas() * 100 / tareas_activas_prev())).toFixed(2)
                       + "%", 
-                    color: 
+                    color:
                       tareas_activas() > tareas_activas_prev() ? 
                       "#C74634" //Rojo en +x%
                       : tareas_activas() < tareas_activas_prev() ? 
@@ -261,17 +285,17 @@ export default function KPIs() {
                       : 
                       "#7F7F7F" //Gris en +0%
                   }]
-                : item.title === "Tareas para sprint actual" ?
+                : item.title === "Tareas por Desarrollador" ?
                   [{
-                    tagName: 
+                    tagName:
                       (
-                        tareas_para_sprint() < tareas_para_sprint_prev() ? "-" : "+") 
-                      + Math.abs(tareas_para_sprint() - tareas_para_sprint_prev()) 
-                      + "%",
+                        tareas_desarrollador() < tareas_desarrollador_prev() ? "-" : "+") 
+                      + Math.abs(100 - (tareas_desarrollador() * 100 / tareas_desarrollador_prev())).toFixed(2)
+                      + "%", 
                     color:
-                      tareas_para_sprint() > tareas_para_sprint_prev() ? 
+                      tareas_desarrollador() > tareas_desarrollador_prev() ? 
                       "#C74634" //Rojo en +x%
-                      : tareas_para_sprint() < tareas_para_sprint_prev() ? 
+                      : tareas_desarrollador() < tareas_desarrollador_prev() ? 
                       "#33553C" //Verde en -x%
                       : 
                       "#7F7F7F" //Gris en +0%
@@ -281,9 +305,9 @@ export default function KPIs() {
               data:
                 item.title === "Tareas Activas" ?
                   tareas_activas()
-                : item.title === "Tareas para sprint actual" ?
-                  tareas_para_sprint()
-                : 
+                : item.title === "Tareas por Desarrollador" ?
+                  tareas_desarrollador()
+                :
                   item.data
             });
           });
@@ -291,8 +315,7 @@ export default function KPIs() {
       }
     }
   }, [data, addBoard, addCard, updateCard, test_items, testing_mode, 
-    tareas_activas,
-    tareas_para_sprint
+    tareas_activas
   ]);
 
   return (

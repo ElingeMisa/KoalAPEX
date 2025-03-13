@@ -1,16 +1,24 @@
 
 package com.springboot.MyTodoList.controller;
 
-import com.springboot.MyTodoList.model.Sprint;
-import com.springboot.MyTodoList.service.SprintService;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.service.SprintService;
 
 @RestController
 @RequestMapping("/sprints")
@@ -30,7 +38,7 @@ public class SprintController {
     @GetMapping("/{id}")
     public ResponseEntity<Sprint> getSprintById(@PathVariable int id) {
         try {
-            Sprint sprint = sprintService.findByIdSprint(id);
+            Sprint sprint = sprintService.findById(id);
             return new ResponseEntity<>(sprint, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,6 +57,11 @@ public class SprintController {
                 .headers(responseHeaders)
                 .body(newSprint);
     }
+
+    //@GetMapping("/{id}")
+    //public List<Sprint> getSprintsByProyecto(@RequestParam Long id) {
+    //    return sprintService.findByidProyecto(id);
+    //}
 
     //@CrossOrigin
     @PutMapping("/{id}")

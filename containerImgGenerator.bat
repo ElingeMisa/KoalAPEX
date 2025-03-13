@@ -2,8 +2,9 @@ docker stop agileOrganizerContainer
 docker rm -f agileOrganizerContainer
 docker rmi agileOrganizerContainer
 call mvn verify
-docker build -f Dockerfile --platform linux/amd64 -t mx-queretaro-1.ocir.io/ax3ubzsr6auc/reacttodo/7kex2/todolistapp-springboot:0.6 .
-docker run -it --name agileOrganizerContainer -p 8080:8080 mx-queretaro-1.ocir.io/ax3ubzsr6auc/reacttodo/7kex2/todolistapp-springboot:0.6
+docker build -f Dockerfile --platform linux/amd64 -t mx-queretaro-1.ocir.io/ax3ubzsr6auc/reacttodo/7kex2/todolistapp-springboot:1.5 .
+docker push mx-queretaro-1.ocir.io/ax3ubzsr6auc/reacttodo/7kex2/todolistapp-springboot:1.5
+# docker run -it --name agileOrganizerContainer -p 8080:8080 mx-queretaro-1.ocir.io/ax3ubzsr6auc/reacttodo/7kex2/todolistapp-springboot:1.5
 
 # ax3ubzsr6auc
 # docker login -u ax3ubzsr6auc/a00835693@tec.mx mx-queretaro-1.ocir.io 

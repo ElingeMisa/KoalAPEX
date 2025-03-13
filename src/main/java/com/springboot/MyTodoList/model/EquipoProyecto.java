@@ -45,11 +45,11 @@ public class EquipoProyecto {
     private Integer idEquipoProyecto;
 
     @ManyToOne
-    @JoinColumn(name = "idEquipo", referencedColumnName = "idEquipo", nullable = true)
+    @JoinColumn(name = "IDEQUIPO", referencedColumnName = "IDEQUIPO", nullable = true)
     private Equipo equipo;
 
     @ManyToOne
-    @JoinColumn(name = "idProyecto", referencedColumnName = "idProyecto", nullable = true)
+    @JoinColumn(name = "IDPROYECTO", referencedColumnName = "IDPROYECTO", nullable = true)
     private Proyecto proyecto;
 
     @Column(name = "Activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")

@@ -78,14 +78,14 @@ public class Tarea {
     private String categoria = "Tarea";
 
     @ManyToOne
-    @JoinColumn(name = "IDDESARROLLADOR", referencedColumnName = "IDDESARROLLADOR")
+    @JoinColumn(name = "IDDESARROLLADOR", referencedColumnName = "IDDESARROLLADOR", nullable = true,foreignKey = @ForeignKey(name = "FK_TAREA_DESARROLLADOR"))
     private Desarrollador desarrollador;
 
     @ManyToOne
     @JoinColumn(name = "IDPROYECTO", referencedColumnName = "IDPROYECTO")
     private Proyecto proyecto;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "IDSPRINT", referencedColumnName = "IDSPRINT")
     private Sprint sprint;
 
@@ -208,6 +208,10 @@ public class Tarea {
         this.sprint = sprint;
     }
 
+    public Boolean isActivo() {
+        return estado.equals("Activa"); 
+    }
+    
     @Override
     public String toString() {
         return "Tarea{" +

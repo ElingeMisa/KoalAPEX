@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.springboot.MyTodoList.model.Desarrollador;
+import com.springboot.MyTodoList.model.Equipo;
 import com.springboot.MyTodoList.model.Manager;
+import com.springboot.MyTodoList.model.Proyecto;
+import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.Tarea;
 import com.springboot.MyTodoList.model.Usuarios;
 
@@ -19,6 +22,12 @@ public class UserData {
     public Manager manager;
     
     public List<Tarea> tareas;
+    public List<Equipo> equipos;
+    public List<Proyecto> proyectos;
+
+    public List<Sprint> sprintsProyecto;
+    // Cada lista de sprints corresponde a un proyecto
+    public List<List<Sprint>> sprints;
 
     public UserData() {
         this.usuario = new Usuarios();
@@ -87,5 +96,37 @@ public class UserData {
     public void setTareas(List<Tarea> tareas) {
         this.tareas = tareas;
     }
+
+    public void setEquipos(List<Equipo> equipos) {
+        this.equipos = equipos;
+    }
+    public List<Equipo> getEquipos() {
+        return equipos;
+    }
+
+    public void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
+    }
+
+    public List<Proyecto> getProyectos() {
+        return proyectos;
+    }
+
+    public void setSprints(List<List<Sprint>> sprints) {
+        this.sprints = sprints;
+    }
+
+    public List<List<Sprint>> getSprints() {
+        return sprints;
+    }
     
+    public List<Sprint> getSprintsProyecto(Proyecto proyecto) {
+        for (List<Sprint> sprintList : sprints) {
+            if (sprintList.get(0).getProyecto().getIdProyecto() == proyecto.getIdProyecto()) {
+                return sprintList;
+            }
+        }
+                return sprintsProyecto;
+        
+    }
 }

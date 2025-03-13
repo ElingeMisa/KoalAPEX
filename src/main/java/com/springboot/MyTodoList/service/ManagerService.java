@@ -44,4 +44,10 @@ public class ManagerService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteManager'");
     }
+
+    public List<Manager> findByIdUsuario(long idUsuario) {
+        // TODO Auto-generated method stub
+        List<Manager> managers = managerRepository.findByIdUsuario(idUsuario);
+        return managers;
+    }
 }

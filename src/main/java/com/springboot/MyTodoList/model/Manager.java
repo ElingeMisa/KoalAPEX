@@ -41,7 +41,7 @@ public class Manager {
     private Integer idManage;
 
     @ManyToOne
-    @JoinColumn(name = "idUsuario", referencedColumnName = "IDUSUARIO", nullable = true)
+    @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO", foreignKey =  @ForeignKey(name="fk_Manager_Usuario"), nullable = true)
     private Usuarios usuario;
 
     @Column(name = "Activo", columnDefinition = "NUMBER(1) DEFAULT 1 CHECK (Activo IN (0,1))")

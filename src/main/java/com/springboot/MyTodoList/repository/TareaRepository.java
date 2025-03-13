@@ -1,10 +1,12 @@
 
 package com.springboot.MyTodoList.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -76,7 +78,7 @@ SELECT * from TODOUSER.TAREA t WHERE t.IDDESARROLLADOR = (SELECT IDDESARROLLADOR
     @Query(value = "SELECT * FROM TODOUSER.TAREA t WHERE t.IDDESARROLLADOR = :idDesarrollador", nativeQuery = true)
     List<Tarea> findByIdDesarrollador(@Param("idDesarrollador") Integer idDesarrollador);
 
-
+    // Busca todos los proyectos con un nombre especifico.
     /* 
     @Query(value = "SELECT t.* FROM TODOUSER.TAREA t " +
        "WHERE t.IDDESARROLLADOR = " +
@@ -87,4 +89,22 @@ SELECT * from TODOUSER.TAREA t WHERE t.IDDESARROLLADOR = (SELECT IDDESARROLLADOR
        nativeQuery = true)
 List<Tarea> findByTokenChannel(@Param("tokenChannel") String tokenChannel);
     */
+    // Guarda una tarea en la base de datos.
+    Tarea save(Tarea tarea);
+
+    // Agrega una tarea a la base de datos.
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO TODOUSER.TAREA (DESCRIPCION, FECHAENTREGA, HORAS_ESTIMADAS, HORAS_REALES, ACTIVO, ESTADO, CATEGORIA, IDDESARROLLADOR, IDPROYECTO, IDSPRINT) VALUES (:descripcion, :fechaEntrega, :horasEstimadas, :horasReales, :activo, :estado, :categoria, :idDesarrollador, :idProyecto, :idSprint)", nativeQuery = true)
+    void agregarTarea(
+        @Param("descripcion") String descripcion, 
+        @Param("fechaEntrega") LocalDateTime fechaEntrega, 
+        @Param("horasEstimadas") Integer horasEstimadas, 
+        @Param("horasReales") String horasReales, 
+        @Param("activo") Integer activo, 
+        @Param("estado") String estado, 
+        @Param("categoria") String categoria, 
+        @Param("idDesarrollador") Integer idDesarrollador, 
+        @Param("idProyecto") Number idProyecto, 
+        @Param("idSprint") Integer idSprint);
 }

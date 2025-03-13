@@ -5,9 +5,7 @@ import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.model.ToDoItem;
 
 import com.springboot.MyTodoList.util.BotMessages;
-import com.springboot.MyTodoList.util.BotCommands;
-import com.springboot.MyTodoList.util.BotLabels;
-import com.springboot.MyTodoList.util.BotHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,7 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.OffsetDateTime;
 
-/**
+/*
  * This is a special handler that receives text input after the AddItemCommandHandler
  * and creates a new to-do item. It needs special treatment as part of a multi-step flow.
  */
