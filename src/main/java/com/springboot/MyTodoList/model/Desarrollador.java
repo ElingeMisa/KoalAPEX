@@ -112,6 +112,7 @@ public class Desarrollador {
         this.activo = activo;
     }
 
+    
     @Override
     public String toString() {
         return "Desarrollador\n{\n\t\t\tidDesarrollador=" + idDesarrollador +

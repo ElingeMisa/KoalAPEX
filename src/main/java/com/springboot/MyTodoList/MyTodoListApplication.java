@@ -1,5 +1,7 @@
 package com.springboot.MyTodoList;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
 import com.springboot.MyTodoList.controller.Handlers.AddTareaCommandHandler;
+import com.springboot.MyTodoList.controller.Handlers.ListItemsCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewHelloCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.NewTareaCommandHandler;
 import com.springboot.MyTodoList.controller.Handlers.StartCommandHandler;
@@ -63,6 +66,9 @@ public class MyTodoListApplication implements CommandLineRunner {
 	@Autowired
 	private NewTareaCommandHandler newTareaCommandHandler;
 
+	@Autowired
+	private ListItemsCommandHandler listItemsCommandHandler;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyTodoListApplication.class, args);
 	}
@@ -85,6 +91,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 						startCommandHandler, 
 						addTareaCommandHandler,
 						newTareaCommandHandler,
+						listItemsCommandHandler,
 						userData,
 						false
 					)

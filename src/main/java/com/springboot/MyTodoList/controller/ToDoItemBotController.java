@@ -47,6 +47,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     private final AddTareaCommandHandler addTareaCommandHandler;
     private final NewToDoItemHandler newToDoItemHandler;
     private final NewTareaCommandHandler newTareaCommandHandler;
+    private final ListItemsCommandHandler listItemsCommandHandler;
 
     private boolean StartCommandHandler;
     public UserData userData;
@@ -61,6 +62,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         StartCommandHandler startCommandHandler,
         AddTareaCommandHandler addTareaCommandHandler,
         NewTareaCommandHandler newTareaCommandHandler,
+        ListItemsCommandHandler listItemsCommandHandler,
         UserData userData,
         Boolean StartCommandHandler
     ) 
@@ -70,6 +72,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         logger.info("Bot name: " + botName);
         
         this.botName = botName;
+        this.listItemsCommandHandler = listItemsCommandHandler;
         this.newHelloCommandHandler = newHelloCommandHandler;  // <-- Guardamos la instancia inyectada
         this.startCommandHandler = startCommandHandler;
         this.addTareaCommandHandler = addTareaCommandHandler;
@@ -82,7 +85,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
         
         // Flujos de comandos
         commandHandlers.add(startCommandHandler);
-        commandHandlers.add(new ListItemsCommandHandler(toDoItemService));
+        commandHandlers.add(listItemsCommandHandler);
         commandHandlers.add(new AddItemCommandHandler(toDoItemService));
         commandHandlers.add(new ItemActionHandler(toDoItemService));
         commandHandlers.add(newHelloCommandHandler);  // <-- Usamos la instancia inyectada
@@ -93,7 +96,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     
     @Override
     public void onUpdateReceived(Update update) {
-        if (StartCommandHandler){
+        if (StartCommandHandler || update.getMessage().getText().equals("/start")) {
+            
+            StartCommandHandler = true;
 
             if (update.hasMessage() && update.getMessage().hasText()) {
 

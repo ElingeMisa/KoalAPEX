@@ -208,6 +208,9 @@ public class Tarea {
         this.sprint = sprint;
     }
 
+    public Boolean isActivo() {
+        return estado.equals("Activa"); 
+    }
     
     @Override
     public String toString() {
