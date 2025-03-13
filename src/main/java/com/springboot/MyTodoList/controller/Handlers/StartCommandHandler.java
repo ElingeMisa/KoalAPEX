@@ -119,9 +119,9 @@ public class StartCommandHandler implements CommandHandler {
         keyboard.add(row);
 
         // third row
-        row = new KeyboardRow();
-        row.add(BotLabels.NEW_HELLO.getLabel());
-        keyboard.add(row);
+        //row = new KeyboardRow();
+        //row.add(BotLabels.NEW_HELLO.getLabel());
+        //keyboard.add(row);
 
         return keyboard;
     }
