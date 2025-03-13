@@ -34,4 +34,6 @@ public interface SprintRepository extends JpaRepository<Sprint, Integer> {
     @Query("SELECT s FROM Sprint s WHERE s.idSprint = :id")
     Sprint findByIdSprint(@Param("id") Long id);
 
+    List<Sprint> findAll();
+
 }

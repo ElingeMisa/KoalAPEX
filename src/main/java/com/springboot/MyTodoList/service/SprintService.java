@@ -28,9 +28,9 @@ public class SprintService {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Sprint findById(int id) {
+    public Sprint findById(Long id) {
         // TODO Auto-generated method stub
-        return sprintRepository.findByIdSprint((long) id);
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     public Sprint addSprint(Sprint sprint) {

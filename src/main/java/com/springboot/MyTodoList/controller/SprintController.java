@@ -28,7 +28,7 @@ public class SprintController {
 
     //@CrossOrigin
     @GetMapping("/{id}")
-    public ResponseEntity<Sprint> getSprintById(@PathVariable int id) {
+    public ResponseEntity<Sprint> getSprintById(@PathVariable Long id) {
         try {
             Sprint sprint = sprintService.findById(id);
             return new ResponseEntity<>(sprint, HttpStatus.OK);
@@ -49,6 +49,11 @@ public class SprintController {
                 .headers(responseHeaders)
                 .body(newSprint);
     }
+
+    //@GetMapping("/{id}")
+    //public List<Sprint> getSprintsByProyecto(@RequestParam Long id) {
+    //    return sprintService.findByidProyecto(id);
+    //}
 
     //@CrossOrigin
     @PutMapping("/{id}")
