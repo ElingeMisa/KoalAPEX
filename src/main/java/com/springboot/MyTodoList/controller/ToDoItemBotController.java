@@ -49,7 +49,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     private final NewTareaCommandHandler newTareaCommandHandler;
     private final ListItemsCommandHandler listItemsCommandHandler;
 
-    private boolean StartCommandHandler;
+    private boolean StartCommandHandler = false;
     public UserData userData;
 
     @Autowired 
@@ -96,10 +96,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     
     @Override
     public void onUpdateReceived(Update update) {
-        if (StartCommandHandler || update.getMessage().getText().equals("/start")) {
-            
-            StartCommandHandler = true;
-
             if (update.hasMessage() && update.getMessage().hasText()) {
 
                 String messageTextFromTelegram = update.getMessage().getText();
@@ -114,7 +110,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
                     // En caso de que add tarea se haya ejecutado
                     if( newTareaCommandHandler.isEsperandoNombre() || 
                         newTareaCommandHandler.isEsperandoFechaEntrega() || 
-                        newTareaCommandHandler.isEsperandoProyecto() 
+                        newTareaCommandHandler.isEsperandoProyecto() ||
+                        newTareaCommandHandler.isEsperandoHorasEstimadas()
                         )
                     {
                         newTareaCommandHandler.handle(update, this);
@@ -127,6 +124,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
                         if (handler.canHandle(messageTextFromTelegram)) {
                             
+                            if(handler instanceof AddTareaCommandHandler){
+                                newTareaCommandHandler.setEsperandoNombre();
+                            }
                             handler.handle(update, this);
                             
                             // Special case for setting the expectingNewItem flag
@@ -134,9 +134,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
                             //    newToDoItemHandler.setExpectingNewItem(true);
                             //}
 
-                            if(handler instanceof AddTareaCommandHandler){
-                                newTareaCommandHandler.setEsperandoNombre();
-                            }
                             
                             handled = true;
                             break;
@@ -157,28 +154,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
                     logger.error("Error handling update: " + e.getLocalizedMessage(), e);
                 }
             }
-
-        }else{
-
-            StartCommandHandler = true;
-
-            SendMessage messageToTelegram = new SendMessage();
-            messageToTelegram.setChatId(update.getMessage().getChatId());
-            messageToTelegram.setText(BotMessages.BOT_NOT_STARTED.getMessage());
-
-            try {
-                execute(messageToTelegram);
-            } catch (TelegramApiException e) {
-                logger.error("Error handling update: " + e.getLocalizedMessage(), e);
-            }
-
-            try {
-                startCommandHandler.handle(update, this);
-            } catch (TelegramApiException e) {
-                
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

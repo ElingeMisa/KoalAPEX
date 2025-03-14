@@ -40,54 +40,51 @@ public enum BotMessages {
 		
 		HELLO_MYTODO_BOT(
 			"*✨ BIENVENIDO A TASKMASTER ✨*\n\n" 
-			+"\"==================================\n" 
 			+ "_Tu asistente personal de productividad._\n\n"
-			+ "📝 *Escribe una nueva tarea o selecciona una opción:*\n"
-			+ "=================================="
+			+ "📝 *Escribe una nueva tarea o selecciona una opción:*"
+			+"*Hola*, _¿cómo estás?_. `Espero estés bien`"
 		),
 
 		BOT_REGISTERED_STARTED(
-			"*🚀 TASKMASTER ACTIVADO 🚀*\n\n"
-			+"\"==================================\n" 
-			+ "Estoy listo para ayudarte a conquistar tu día. 💪\n"
-			+ "=================================="
+			"*🚀 TASKMASTER ACTIVADO*\n\n"
+			+ "Estoy listo para ayudarte a conquistar tu día. 💪"
 		),
 
 		ITEM_DONE(
-			"*✅ ¡TAREA COMPLETADA! 🎉*\n\n"
+			"*✅ ¡TAREA COMPLETADA!*\n\n"
 			+ "_Un paso más hacia tus objetivos._\n\n"
-			+ "📌 *Opciones:*\n"
-			+ "• <code>/todolist</code> → Ver todas mis tareas\n"
+			+ "📌 *Próximos pasos:*\n"
+			+ "• <code>/todolist</code> → Ver mis tareas\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		ITEM_UNDONE(
-			"*🔄 ¡TAREA PENDIENTE DE NUEVO!*\n\n"
+			"*🔄 TAREA PENDIENTE*\n\n"
 			+ "_No hay problema, a veces necesitamos más tiempo._\n\n"
 			+ "📌 *Opciones:*\n"
-			+ "• <code>/todolist</code> → Ver todas mis tareas\n"
+			+ "• <code>/todolist</code> → Ver mis tareas\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		ITEM_DELETED(
-			"*🗑️ ¡TAREA ELIMINADA!*\n\n"
+			"*🗑️ TAREA ELIMINADA*\n\n"
 			+ "_Más espacio para lo importante._\n\n"
 			+ "📌 *Opciones:*\n"
-			+ "• <code>/todolist</code> → Ver todas mis tareas\n"
+			+ "• <code>/todolist</code> → Ver mis tareas\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		TYPE_NEW_TODO_ITEM(
 			"*📝 NUEVA TAREA*\n\n"
-			+ "✏️ *Escribe tu tarea y envíala con la flecha azul ➡️*\n\n"
-			+ "_¡Sé específico para mejores resultados!_"
+			+ "✏️ *Escribe tu tarea y envíala.*\n\n"
+			+ "_Consejo: Sé específico para mejores resultados._"
 		),
 
 		NEW_ITEM_ADDED(
-			"*➕ ¡NUEVA TAREA AÑADIDA! 💪*\n\n"
+			"*➕ TAREA AÑADIDA*\n\n"
 			+ "_Tu futuro yo te lo agradecerá._\n\n"
 			+ "📌 *Opciones:*\n"
-			+ "• <code>/todolist</code> → Ver todas mis tareas\n"
+			+ "• <code>/todolist</code> → Ver mis tareas\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
@@ -98,8 +95,8 @@ public enum BotMessages {
 		),
 
 		NO_ITEMS(
-			"*📭 TU LISTA ESTÁ VACÍA*\n\n"
-			+ "¡Es el momento perfecto para añadir nuevas metas! 🎯\n\n"
+			"*📭 LISTA DE TAREAS VACÍA*\n\n"
+			+ "El momento perfecto para añadir nuevas metas. 🎯\n\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
@@ -117,49 +114,46 @@ public enum BotMessages {
 
 		INVALID_COMMAND(
 			"*❓ COMANDO NO RECONOCIDO*\n\n"
-			+ "Incluso los mejores asistentes se confunden a veces. 🤔\n\n"
-			+ "Prueba con un comando válido o usa <code>/start</code> para ver opciones."
+			+ "Prueba con un comando válido o usa <code>/start</code> para ver las opciones disponibles."
 		),
 
 		TYPE_NEW_TAREA(
 			"*📋 NUEVA TAREA*\n\n"
-			+ "✏️ *Describe lo que necesitas hacer y envíalo con la flecha azul ➡️*\n\n"
-			+ "_Tip: Añade detalles para recordar mejor después._"
+			+ "✏️ *Describe lo que necesitas hacer.*\n\n"
+			+ "_Consejo: Añade detalles para recordar mejor después._"
 		),
 
 		NEW_TAREA_ADDED(
-			"*✅ ¡TAREA REGISTRADA CON ÉXITO!*\n\n"
+			"*✅ TAREA REGISTRADA*\n\n"
 			+ "_La organización es el primer paso hacia el éxito._\n\n"
 			+ "📌 *Opciones:*\n"
-			+ "• <code>/todolist</code> → Ver todas mis tareas\n"
+			+ "• <code>/todolist</code> → Ver mis tareas\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		NO_TAREAS(
-			"*🏝️ ¡ZONA LIBRE DE TAREAS!*\n\n"
+			"*🏝️ LISTA DE TAREAS VACÍA*\n\n"
 			+ "Disfruta el momento o añade nuevos objetivos. ✨\n\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		NO_TAREAS_TO_DELETE(
-			"*🧹 TODO LIMPIO POR AQUÍ*\n\n"
-			+ "No hay tareas para eliminar. ¡Buen trabajo! 🎉\n\n"
+			"*🧹 NO HAY TAREAS PARA ELIMINAR*\n\n"
+			+ "Todo está limpio por aquí. ¡Buen trabajo! 🎉\n\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		NO_TAREAS_TO_DONE(
 			"*🔎 NO HAY TAREAS PENDIENTES*\n\n"
-			+ "¡Parece que ya completaste todo! Es hora de nuevos desafíos. 💡\n\n"
+			+ "¡Has completado todo! Es hora de nuevos desafíos. 💡\n\n"
 			+ "• <code>/start</code> → Volver al inicio"
 		),
 
 		BOT_NOT_STARTED(
-			"*👋 ¡HOLA! PARECE QUE AÚN NO HEMOS COMENZADO*\n\n"
-			+ "No te preocupes, yo me encargo. 🔄\n\n"
-			+ "*Iniciando TaskMaster...*\n"
+			"*👋 ¡HOLA! COMENCEMOS*\n\n"
+			+ "*Iniciando TaskMaster...*\n\n"
 			+ "_¡Listo para la acción!_"
 		);
-		
 		private String message;
 	
 		BotMessages(String enumMessage) {

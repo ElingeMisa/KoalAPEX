@@ -45,6 +45,7 @@ public class NewTareaCommandHandler {
     private boolean isWaitingForProyecto = false;
     private boolean isWaitingForFechaEntrega = false;
     private boolean isWaitingForEquipo = false;
+    private boolean isWaitingForHorasEstimadas = false;
     
     // Mapa para almacenar tareas temporales mientras se completa el proceso de creación
     private Map<Long, Tarea> tareasEnProceso = new HashMap<>();
@@ -79,6 +80,10 @@ public class NewTareaCommandHandler {
     
     public boolean isEsperandoFechaEntrega() {
         return isWaitingForFechaEntrega;
+    }
+
+    public boolean isEsperandoHorasEstimadas() {
+        return isWaitingForHorasEstimadas;
     }
     
     private void trymessage(Update update, AbsSender sender, String message) 
@@ -171,6 +176,7 @@ public class NewTareaCommandHandler {
                         
                         isWaitingForProyecto = false;
                         isWaitingForFechaEntrega = true;
+
                         message = "Excelente, has seleccionado el proyecto " + tarea.getProyecto().getNombre() + ".\n" +
                               "Por favor, selecciona la fecha de entrega para la tarea:";
                         existe = true;
@@ -223,19 +229,19 @@ public class NewTareaCommandHandler {
                     
                     // Revisamos de la lista de Sprint en que sprint entraria
                     tarea.setSprint(sprint_entrega);
+                    isWaitingForFechaEntrega = false;
+                    isWaitingForHorasEstimadas = true;
                     // Guardamos la tarea en la base de datos
-                    tareaService.agregarTarea(tarea);
+                    
                     
                     // Notificamos éxito
                     SendMessage mensajeExito = new SendMessage();
                     mensajeExito.setChatId(chatId);
-                    mensajeExito.setText("✅ Tarea \"" + tarea.getDescripcion() + "\" creada con éxito en el proyecto \"" + 
-                                        tarea.getProyecto().getNombre() + "\" con fecha de entrega " + tarea.getFechaEntrega());
+                    mensajeExito.setText("Tarea \"" + tarea.getDescripcion() + "\" ha sido seleccionada para entregarse en \"" + 
+                                        tarea.getProyecto().getNombre() + "\" con fecha de entrega " + tarea.getFechaEntrega() + "ahora por favor ingresa las horas estimadas para la tarea");
                     sender.execute(mensajeExito);
                     
-                    // Limpiamos el estado
-                    isWaitingForFechaEntrega = false;
-                    tareasEnProceso.remove(chatId);
+                    // Limpiamos el estad
                     
                 } catch (Exception e) {
                     // Formato de fecha inválido
@@ -244,6 +250,25 @@ public class NewTareaCommandHandler {
                     mensajeError.setText("⚠️ Formato de fecha inválido. " + user_response + " No es un formato de fecha válido. Por favor, ingresa la fecha en formato DD/MM/YYYY o YYYY-MM-DDTHH:MM:\n" + e.getMessage());
                     sender.execute(mensajeError);
                 }
+            } else if(isWaitingForHorasEstimadas){
+                // Cuarta etapa: recibimos las horas estimadas
+                user_response = messageText;
+                Tarea tarea = tareasEnProceso.get(chatId);
+                try {
+                    int horasEstimadas = Integer.parseInt(user_response);
+                    tarea.setHorasEstimadas(horasEstimadas);
+                    tareaService.agregarTarea(tarea);
+                    isWaitingForHorasEstimadas = false;
+                    tareasEnProceso.remove(chatId);
+                    sendMessageWithoutUpdate(chatId, sender, "✅ Tarea \"" + tarea.getDescripcion() + "\" creada con éxito en el proyecto \"" + 
+                                     tarea.getProyecto().getNombre() + "\" con fecha de entrega " + tarea.getFechaEntrega());
+                } catch (Exception e) {
+                    SendMessage mensajeError = new SendMessage();
+                    mensajeError.setChatId(chatId);
+                    mensajeError.setText("⚠️ Formato de horas estimadas inválido. " + user_response + " No es un número válido. Por favor, ingresa las horas estimadas como un número entero.");
+                    sender.execute(mensajeError);
+                }
+                tareaService.agregarTarea(tarea);
             }
             
         } catch (Exception e) {

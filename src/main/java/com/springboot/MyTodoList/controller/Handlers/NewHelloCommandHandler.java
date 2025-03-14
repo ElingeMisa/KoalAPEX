@@ -63,6 +63,7 @@ public class NewHelloCommandHandler implements CommandHandler {
 
     private void trymessage(AbsSender sender,String message, SendMessage messageToTelegram) throws TelegramApiException{
         messageToTelegram.setText(message);
+        messageToTelegram.enableMarkdown(true);
         try {
             sender.execute(messageToTelegram);
         } catch (TelegramApiException e) {
